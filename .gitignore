@@ -1,0 +1,7 @@
+__pycache__/*
+*/__pycache__/*
+./main/controller/__pycache__/*
+./main/model/__pycache__/*
+./main/service/__pycache__/*
+./main/util/__pycache__/*
+*.pyc

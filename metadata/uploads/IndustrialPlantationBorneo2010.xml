@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmd:MD_Metadata xmlns:gco="http://www.isotc211.org/2005/gco/" xmlns:gmd="http://www.isotc211.org/2005/gmd/" xmlns:gml="http://www.opengis.net/gml/" xmlns:gts="http://www.isotc211.org/2005/gts/" xmlns:srv="http://www.isotc211.org/2005/srv/" xmlns:xlink="http://www.w3.org/1999/xlink/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance/">
+    <gmd:fileIdentifier>
+        <gco:CharacterString>227134BA-FE6A-4563-8696-7EE9AA5EB161</gco:CharacterString>
+    </gmd:fileIdentifier>
+    <gmd:language>
+        <gmd:LanguageCode codeList="./resources/codeList.xml#LanguageCode" codeListValue="eng">eng</gmd:LanguageCode>
+    </gmd:language>
+    <gmd:characterSet>
+        <gmd:MD_CharacterSetCode codeList="./resources/codeList.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</gmd:MD_CharacterSetCode>
+    </gmd:characterSet>
+    <gmd:parentIdentifier gco:nilReason="missing"/>
+    <gmd:hierarchyLevel>
+        <gmd:MD_ScopeCode codeList="./resources/codeList.xml#MD_ScopeCode" codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+    </gmd:hierarchyLevel>
+    <gmd:hierarchyLevelName gco:nilReason="missing"/>
+    <gmd:contact>
+        <gmd:CI_ResponsibleParty>
+            <gmd:individualName>
+                <gco:CharacterString>David L.A., Gaveau</gco:CharacterString>
+            </gmd:individualName>
+            <gmd:organisationName>
+                <gco:CharacterString>Center for International Forestry Research (CIFOR) - Headquarters</gco:CharacterString>
+            </gmd:organisationName>
+            <gmd:positionName>
+                <gco:CharacterString>Scientist - Forests and Environment Programme</gco:CharacterString>
+            </gmd:positionName>
+            <gmd:contactInfo>
+                <gmd:CI_Contact>
+                    <gmd:phone>
+                        <gmd:CI_Telephone>
+                            <gmd:voice>
+                                <gco:CharacterString>+62-251-8622-622</gco:CharacterString>
+                            </gmd:voice>
+                            <gmd:facsimile>
+                                <gco:CharacterString>+62-251-8622-100</gco:CharacterString>
+                            </gmd:facsimile>
+                        </gmd:CI_Telephone>
+                    </gmd:phone>
+                    <gmd:address>
+                        <gmd:CI_Address>
+                            <gmd:deliveryPoint>
+                                <gco:CharacterString>Office address Jalan CIFOR, Situ Gede Bogor Barat 16115, Indonesia Mailing address P.O. Box 0113 BOCBD</gco:CharacterString>
+                            </gmd:deliveryPoint>
+                            <gmd:city>
+                                <gco:CharacterString>Bogor</gco:CharacterString>
+                            </gmd:city>
+                            <gmd:administrativeArea>
+                                <gco:CharacterString>West Java</gco:CharacterString>
+                            </gmd:administrativeArea>
+                            <gmd:postalCode>
+                                <gco:CharacterString>16115</gco:CharacterString>
+                            </gmd:postalCode>
+                            <gmd:country>
+                                <gmd:Country codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="ID" codeSpace="ISO3166-1">ID</gmd:Country>
+                            </gmd:country>
+                            <gmd:electronicMailAddress>
+                                <gco:CharacterString>d.gaveau@cgiar.org</gco:CharacterString>
+                            </gmd:electronicMailAddress>
+                        </gmd:CI_Address>
+                    </gmd:address>
+                </gmd:CI_Contact>
+            </gmd:contactInfo>
+            <gmd:role>
+                <gmd:CI_RoleCode codeList="./resources/codeList.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+            </gmd:role>
+        </gmd:CI_ResponsibleParty>
+    </gmd:contact>
+    <gmd:dateStamp>
+        <gco:Date>2021-03-09</gco:Date>
+    </gmd:dateStamp>
+    <gmd:metadataStandardName>
+        <gco:CharacterString>NAP - Metadata</gco:CharacterString>
+    </gmd:metadataStandardName>
+    <gmd:metadataStandardVersion>
+        <gco:CharacterString>1.2</gco:CharacterString>
+    </gmd:metadataStandardVersion>
+    <gmd:dataSetURI>
+        <gco:CharacterString>https://geonode.cifor.org/layers/geonode:reg_borneo_industrialplantation_cifor_2010_1</gco:CharacterString>
+    </gmd:dataSetURI>
+    <gmd:spatialRepresentationInfo>
+        <gmd:MD_VectorSpatialRepresentation>
+            <gmd:topologyLevel>
+                <gmd:MD_TopologyLevelCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopologyLevelCode" codeListValue="geometryOnly" codeSpace="ISOTC211/19115">geometryOnly</gmd:MD_TopologyLevelCode>
+            </gmd:topologyLevel>
+            <gmd:geometricObjects>
+                <gmd:MD_GeometricObjects>
+                    <gmd:geometricObjectType>
+                        <gmd:MD_GeometricObjectTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_GeometricObjectTypeCode" codeListValue="composite" codeSpace="ISOTC211/19115">composite</gmd:MD_GeometricObjectTypeCode>
+                    </gmd:geometricObjectType>
+                    <gmd:geometricObjectCount>
+                        <gco:Integer>2</gco:Integer>
+                    </gmd:geometricObjectCount>
+                </gmd:MD_GeometricObjects>
+            </gmd:geometricObjects>
+        </gmd:MD_VectorSpatialRepresentation>
+    </gmd:spatialRepresentationInfo>
+    <gmd:referenceSystemInfo>
+        <gmd:MD_ReferenceSystem>
+            <gmd:referenceSystemIdentifier>
+                <gmd:RS_Identifier>
+                    <gmd:code>
+                        <gco:CharacterString>4326</gco:CharacterString>
+                    </gmd:code>
+                    <gmd:codeSpace>
+                        <gco:CharacterString>EPSG</gco:CharacterString>
+                    </gmd:codeSpace>
+                    <gmd:version>
+                        <gco:CharacterString>6.14(3.0.1)</gco:CharacterString>
+                    </gmd:version>
+                </gmd:RS_Identifier>
+            </gmd:referenceSystemIdentifier>
+        </gmd:MD_ReferenceSystem>
+    </gmd:referenceSystemInfo>
+    <gmd:identificationInfo>
+        <gmd:MD_DataIdentification>
+            <gmd:citation>
+                <gmd:CI_Citation>
+                    <gmd:title>
+                        <gco:CharacterString>Industrial Plantation in Borneo 2010</gco:CharacterString>
+                    </gmd:title>
+                    <gmd:date>
+                        <gmd:CI_Date>
+                            <gmd:date>
+                                <gco:Date>2021-01-20</gco:Date>
+                            </gmd:date>
+                            <gmd:dateType>
+                                <gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision" codeSpace="ISOTC211/19115">revision</gmd:CI_DateTypeCode>
+                            </gmd:dateType>
+                        </gmd:CI_Date>
+                    </gmd:date>
+                    <gmd:citedResponsibleParty>
+                        <gmd:CI_ResponsibleParty>
+                            <gmd:individualName>
+                                <gco:CharacterString>David L.A., Gaveau</gco:CharacterString>
+                            </gmd:individualName>
+                            <gmd:organisationName>
+                                <gco:CharacterString>Center for International Forestry Research (CIFOR) - Headquarters</gco:CharacterString>
+                            </gmd:organisationName>
+                            <gmd:positionName>
+                                <gco:CharacterString>Scientist - Forests and Environment Programme</gco:CharacterString>
+                            </gmd:positionName>
+                            <gmd:contactInfo>
+                                <gmd:CI_Contact>
+                                    <gmd:phone>
+                                    <gmd:CI_Telephone>
+                                    <gmd:voice>
+                                    <gco:CharacterString>+62-251-8622-622</gco:CharacterString>
+                                    </gmd:voice>
+                                    <gmd:facsimile>
+                                    <gco:CharacterString>+62-251-8622-100</gco:CharacterString>
+                                    </gmd:facsimile>
+                                    </gmd:CI_Telephone>
+                                    </gmd:phone>
+                                    <gmd:address>
+                                    <gmd:CI_Address>
+                                    <gmd:deliveryPoint>
+                                    <gco:CharacterString>Office address Jalan CIFOR, Situ Gede Bogor Barat 16115, Indonesia Mailing address P.O. Box 0113 BOCBD</gco:CharacterString>
+                                    </gmd:deliveryPoint>
+                                    <gmd:city>
+                                    <gco:CharacterString>Bogor</gco:CharacterString>
+                                    </gmd:city>
+                                    <gmd:administrativeArea>
+                                    <gco:CharacterString>West Java</gco:CharacterString>
+                                    </gmd:administrativeArea>
+                                    <gmd:postalCode>
+                                    <gco:CharacterString>16115</gco:CharacterString>
+                                    </gmd:postalCode>
+                                    <gmd:country>
+                                    <gmd:Country codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="ID" codeSpace="ISO3166-1">ID</gmd:Country>
+                                    </gmd:country>
+                                    </gmd:CI_Address>
+                                    </gmd:address>
+                                </gmd:CI_Contact>
+                            </gmd:contactInfo>
+                            <gmd:role>
+                                <gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115">pointOfContact</gmd:CI_RoleCode>
+                            </gmd:role>
+                        </gmd:CI_ResponsibleParty>
+                    </gmd:citedResponsibleParty>
+                    <gmd:presentationForm>
+                        <gmd:CI_PresentationFormCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_PresentationFormCode" codeListValue="mapDigital" codeSpace="ISOTC211/19115">mapDigital</gmd:CI_PresentationFormCode>
+                    </gmd:presentationForm>
+                </gmd:CI_Citation>
+            </gmd:citation>
+            <gmd:abstract>
+                <gco:CharacterString>The dataset shows the exsisting industrial oil palm and timber plantation in 2010 over the whole island of Borneo.</gco:CharacterString>
+            </gmd:abstract>
+            <gmd:purpose>
+                <gco:CharacterString>Industrial Plantation in Borneo developed by CIFOR in 2010</gco:CharacterString>
+            </gmd:purpose>
+            <gmd:credit>
+                <gco:CharacterString>CIFOR. Gaveau, D. 2010</gco:CharacterString>
+            </gmd:credit>
+            <gmd:pointOfContact>
+                <gmd:CI_ResponsibleParty>
+                    <gmd:individualName>
+                        <gco:CharacterString>David L.A., Gaveau</gco:CharacterString>
+                    </gmd:individualName>
+                    <gmd:organisationName>
+                        <gco:CharacterString>Center for International Forestry Research (CIFOR) - Headquarters</gco:CharacterString>
+                    </gmd:organisationName>
+                    <gmd:positionName>
+                        <gco:CharacterString>Scientist - Forests and Environment Programme</gco:CharacterString>
+                    </gmd:positionName>
+                    <gmd:contactInfo>
+                        <gmd:CI_Contact>
+                            <gmd:phone>
+                                <gmd:CI_Telephone>
+                                    <gmd:voice>
+                                    <gco:CharacterString>+62-251-8622-622</gco:CharacterString>
+                                    </gmd:voice>
+                                    <gmd:facsimile>
+                                    <gco:CharacterString>+62-251-8622-100</gco:CharacterString>
+                                    </gmd:facsimile>
+                                </gmd:CI_Telephone>
+                            </gmd:phone>
+                            <gmd:address>
+                                <gmd:CI_Address>
+                                    <gmd:deliveryPoint>
+                                    <gco:CharacterString>Office address Jalan CIFOR, Situ Gede Bogor Barat 16115, Indonesia Mailing address P.O. Box 0113 BOCBD</gco:CharacterString>
+                                    </gmd:deliveryPoint>
+                                    <gmd:city>
+                                    <gco:CharacterString>Bogor</gco:CharacterString>
+                                    </gmd:city>
+                                    <gmd:administrativeArea>
+                                    <gco:CharacterString>West Java</gco:CharacterString>
+                                    </gmd:administrativeArea>
+                                    <gmd:postalCode>
+                                    <gco:CharacterString>16115</gco:CharacterString>
+                                    </gmd:postalCode>
+                                    <gmd:country>
+                                    <gmd:Country codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm" codeListValue="ID" codeSpace="ISO3166-1">ID</gmd:Country>
+                                    </gmd:country>
+                                    <gmd:electronicMailAddress>
+                                    <gco:CharacterString>d.gaveau@cgiar.org</gco:CharacterString>
+                                    </gmd:electronicMailAddress>
+                                </gmd:CI_Address>
+                            </gmd:address>
+                        </gmd:CI_Contact>
+                    </gmd:contactInfo>
+                    <gmd:role>
+                        <gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact" codeSpace="ISOTC211/19115">pointOfContact</gmd:CI_RoleCode>
+                    </gmd:role>
+                </gmd:CI_ResponsibleParty>
+            </gmd:pointOfContact>
+            <gmd:resourceMaintenance>
+                <gmd:MD_MaintenanceInformation>
+                    <gmd:maintenanceAndUpdateFrequency>
+                        <gmd:MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="unknown" codeSpace="ISOTC211/19115">unknown</gmd:MD_MaintenanceFrequencyCode>
+                    </gmd:maintenanceAndUpdateFrequency>
+                </gmd:MD_MaintenanceInformation>
+            </gmd:resourceMaintenance>
+            <gmd:descriptiveKeywords>
+                <gmd:MD_Keywords>
+                    <gmd:keyword>
+                        <gco:CharacterString>Atlas Borneo</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Forests, Trees and Agroforestry (FTA)</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Flagship 3: Sustainable value chains and investments to support forest conservation and equitable development</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Flagship 4: Landscape dynamics, productivity and resilience</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:type>
+                        <gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme" codeSpace="ISOTC211/19115">theme</gmd:MD_KeywordTypeCode>
+                    </gmd:type>
+                </gmd:MD_Keywords>
+            </gmd:descriptiveKeywords>
+            <gmd:descriptiveKeywords>
+                <gmd:MD_Keywords>
+                    <gmd:keyword>
+                        <gco:CharacterString>plantations</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>oil palms</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>pulpwood</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Borneo</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Biodiversity, safeguarding and conservation</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Climate change adaptation</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Landscape governance</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:keyword>
+                        <gco:CharacterString>Livelihood trajectory modelling and assessment</gco:CharacterString>
+                    </gmd:keyword>
+                </gmd:MD_Keywords>
+            </gmd:descriptiveKeywords>
+            <gmd:descriptiveKeywords>
+                <gmd:MD_Keywords>
+                    <gmd:keyword>
+                        <gco:CharacterString>Downloadable Data</gco:CharacterString>
+                    </gmd:keyword>
+                    <gmd:thesaurusName uuidref="723f6998-058e-11dc-8314-0800200c9a66"/>
+                </gmd:MD_Keywords>
+            </gmd:descriptiveKeywords>
+            <gmd:resourceConstraints>
+                <gmd:MD_Constraints>
+                    <gmd:useLimitation>
+                        <gco:CharacterString>The information contained in this dataset is the exclusive property of Center for International Forestry Research (CIFOR) - Headquarters and any respective copyright owners. This work is protected under international copyright treaties and convention. All uses for commercial purposes require the written permission of Center for International Forestry Research (CIFOR) - Headquarters and any graphic outputs (on screen or on paper) produced from this dataset must carry the following acknowledgement Center for International Forestry Research (CIFOR) - Headquarters.</gco:CharacterString>
+                    </gmd:useLimitation>
+                </gmd:MD_Constraints>
+            </gmd:resourceConstraints>
+            <gmd:spatialRepresentationType>
+                <gmd:MD_SpatialRepresentationTypeCode codeList="./resources/codeList.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector">vector</gmd:MD_SpatialRepresentationTypeCode>
+            </gmd:spatialRepresentationType>
+            <gmd:language>
+                <gmd:LanguageCode codeList="./resources/codeList.xml#LanguageCode" codeListValue="eng">eng</gmd:LanguageCode>
+            </gmd:language>
+            <gmd:characterSet>
+                <gmd:MD_CharacterSetCode codeList="./resources/codeList.xml#MD_CharacterSetCode" codeListValue="utf8">utf8</gmd:MD_CharacterSetCode>
+            </gmd:characterSet>
+            <gmd:topicCategory>
+                <gmd:MD_TopicCategoryCode>environment</gmd:MD_TopicCategoryCode>
+            </gmd:topicCategory>
+            <gmd:environmentDescription>
+                <gco:CharacterString> Version 6.2 (Build 9200) ; Esri ArcGIS 10.4.1.5686</gco:CharacterString>
+            </gmd:environmentDescription>
+            <gmd:extent>
+                <gmd:EX_Extent>
+                    <gmd:geographicElement>
+                        <gmd:EX_GeographicBoundingBox>
+                            <gmd:extentTypeCode>
+                                <gco:Boolean>false</gco:Boolean>
+                            </gmd:extentTypeCode>
+                            <gmd:westBoundLongitude>
+                                <gco:Decimal>108.866871</gco:Decimal>
+                            </gmd:westBoundLongitude>
+                            <gmd:eastBoundLongitude>
+                                <gco:Decimal>119.262904</gco:Decimal>
+                            </gmd:eastBoundLongitude>
+                            <gmd:southBoundLatitude>
+                                <gco:Decimal>-4.101245</gco:Decimal>
+                            </gmd:southBoundLatitude>
+                            <gmd:northBoundLatitude>
+                                <gco:Decimal>7.008916</gco:Decimal>
+                            </gmd:northBoundLatitude>
+                        </gmd:EX_GeographicBoundingBox>
+                    </gmd:geographicElement>
+                </gmd:EX_Extent>
+            </gmd:extent>
+        </gmd:MD_DataIdentification>
+    </gmd:identificationInfo>
+    <gmd:distributionInfo>
+        <gmd:MD_Distribution>
+            <gmd:distributionFormat>
+                <gmd:MD_Format>
+                    <gmd:name>
+                        <gco:CharacterString>Shapefile</gco:CharacterString>
+                    </gmd:name>
+                    <gmd:version>
+                        <gco:CharacterString>--</gco:CharacterString>
+                    </gmd:version>
+                </gmd:MD_Format>
+            </gmd:distributionFormat>
+            <gmd:distributor>
+                <gmd:MD_Distributor>
+                    <gmd:distributorContact>
+                        <gmd:CI_ResponsibleParty>
+                            <gmd:individualName>
+                                <gco:CharacterString>David L.A., Gaveau</gco:CharacterString>
+                            </gmd:individualName>
+                            <gmd:organisationName>
+                                <gco:CharacterString>Center for International Forestry Research (CIFOR) - Headquarters</gco:CharacterString>
+                            </gmd:organisationName>
+                            <gmd:positionName>
+                                <gco:CharacterString>Scientist - Forests and Environment Programme</gco:CharacterString>
+                            </gmd:positionName>
+                            <gmd:contactInfo>
+                                <gmd:CI_Contact>
+                                    <gmd:phone>
+                                    <gmd:CI_Telephone>
+                                    <gmd:voice>
+                                    <gco:CharacterString>+62-251-8622-622</gco:CharacterString>
+                                    </gmd:voice>
+                                    <gmd:facsimile>
+                                    <gco:CharacterString>+62-251-8622-100</gco:CharacterString>
+                                    </gmd:facsimile>
+                                    </gmd:CI_Telephone>
+                                    </gmd:phone>
+                                    <gmd:address>
+                                    <gmd:CI_Address>
+                                    <gmd:deliveryPoint>
+                                    <gco:CharacterString>Office address Jalan CIFOR, Situ Gede Bogor Barat 16115, Indonesia Mailing address P.O. Box 0113 BOCBD</gco:CharacterString>
+                                    </gmd:deliveryPoint>
+                                    <gmd:city>
+                                    <gco:CharacterString>Bogor</gco:CharacterString>
+                                    </gmd:city>
+                                    <gmd:administrativeArea>
+                                    <gco:CharacterString>West Java</gco:CharacterString>
+                                    </gmd:administrativeArea>
+                                    <gmd:postalCode>
+                                    <gco:CharacterString>16115</gco:CharacterString>
+                                    </gmd:postalCode>
+                                    <gmd:country>
+                                    <gco:CharacterString>&lt;gmd:Country
+              codeList="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm"
+              codeListValue="ID" codeSpace="ISO3166-1"&gt;ID&lt;/gmd:Country&gt;
+          </gco:CharacterString>
+                                    </gmd:country>
+                                    </gmd:CI_Address>
+                                    </gmd:address>
+                                </gmd:CI_Contact>
+                            </gmd:contactInfo>
+                            <gmd:role>
+                                <gmd:CI_RoleCode codeList="./resources/codeList.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+                            </gmd:role>
+                        </gmd:CI_ResponsibleParty>
+                    </gmd:distributorContact>
+                    <gmd:distributorFormat gco:nilReason="missing"/>
+                </gmd:MD_Distributor>
+            </gmd:distributor>
+            <gmd:transferOptions>
+                <gmd:MD_DigitalTransferOptions>
+                    <gmd:transferSize>
+                        <gco:Real>3.025</gco:Real>
+                    </gmd:transferSize>
+                    <gmd:onLine>
+                        <gmd:CI_OnlineResource>
+                            <gmd:linkage>
+                                <gmd:URL>https://geonode.cifor.org/layers/geonode:reg_borneo_industrialplantation_cifor_2010_1</gmd:URL>
+                            </gmd:linkage>
+                        </gmd:CI_OnlineResource>
+                    </gmd:onLine>
+                </gmd:MD_DigitalTransferOptions>
+            </gmd:transferOptions>
+        </gmd:MD_Distribution>
+    </gmd:distributionInfo>
+    <gmd:dataQualityInfo>
+        <gmd:DQ_DataQuality>
+            <gmd:scope>
+                <gmd:DQ_Scope>
+                    <gmd:level>
+                        <gmd:MD_ScopeCode codeList="./resources/codeList.xml#MD_ScopeCode" codeListValue="dataset">dataset</gmd:MD_ScopeCode>
+                    </gmd:level>
+                    <gmd:levelDescription gco:nilReason="missing"/>
+                </gmd:DQ_Scope>
+            </gmd:scope>
+            <gmd:report>
+                <gmd:DQ_ConceptualConsistency>
+                    <gmd:result>
+                        <gmd:DQ_ConformanceResult>
+                            <gmd:specification>
+                                <gmd:CI_Citation>
+                                    <gmd:title>
+                                    <gco:CharacterString>-</gco:CharacterString>
+                                    </gmd:title>
+                                    <gmd:date>
+                                    <gmd:CI_Date>
+                                    <gmd:date>
+                                    <gco:Date>2021-01-20</gco:Date>
+                                    </gmd:date>
+                                    <gmd:dateType>
+                                    <gmd:CI_DateTypeCode codeList="http://www.fgdc.gov/nap/metadata/register/codelists.html#napCI_DateTypeCode" codeListValue="notAvailable" codeSpace="ISOTC211/19139/NAP">notAvailable</gmd:CI_DateTypeCode>
+                                    </gmd:dateType>
+                                    </gmd:CI_Date>
+                                    </gmd:date>
+                                </gmd:CI_Citation>
+                            </gmd:specification>
+                            <gmd:explanation>
+                                <gco:CharacterString>--</gco:CharacterString>
+                            </gmd:explanation>
+                            <gmd:pass>
+                                <gco:Boolean>true</gco:Boolean>
+                            </gmd:pass>
+                        </gmd:DQ_ConformanceResult>
+                    </gmd:result>
+                </gmd:DQ_ConceptualConsistency>
+            </gmd:report>
+            <gmd:lineage>
+                <gmd:LI_Lineage>
+                    <gmd:statement>
+                        <gco:CharacterString>All industrial plantations that existed in year 2010 were digitized via visual interpretation of 268 LANDSAT scenes from the 1970s, 1990, 2000 and 2010. The inspection of multiple images prior to 2010 ensured that those plantations that were mature in a given year and therefore difficult to detect in that year were fully accounted for. Plantations were identified as large geometrically-shaped areas with distinctive, grid-like or contour-like patterns and homogeneous spectral signatures characteristic of monocultures or recently-cleared lands.</gco:CharacterString>
+                    </gmd:statement>
+                    <gmd:processStep gco:nilReason="missing"/>
+                    <gmd:source gco:nilReason="missing"/>
+                </gmd:LI_Lineage>
+            </gmd:lineage>
+        </gmd:DQ_DataQuality>
+    </gmd:dataQualityInfo>
+    <gmd:metadataMaintenance>
+        <gmd:MD_MaintenanceInformation>
+            <gmd:maintenanceAndUpdateFrequency>
+                <gmd:MD_MaintenanceFrequencyCode codeList="./resources/codeList.xml#MD_MaintenanceFrequencyCode" codeListValue="unknown">unknown</gmd:MD_MaintenanceFrequencyCode>
+            </gmd:maintenanceAndUpdateFrequency>
+        </gmd:MD_MaintenanceInformation>
+    </gmd:metadataMaintenance>
+</gmd:MD_Metadata>
+
