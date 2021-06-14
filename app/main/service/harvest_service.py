@@ -131,9 +131,16 @@ def get_bbox_by_identifier(id):
 
 #query = session.query(Lake).filter(Lake.geom.ST_Contains('POINT(4 1)'))
 def get_harvest_by_bbox(minx, miny, maxx, maxy):
-    return Harvestings.query.filter(Harvestings.bbox.ST_Intersects('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').limit(1000).all()
+    return Harvestings.query.filter(Harvestings.bbox.ST_Intersects('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').all()
     #.limit(100)
     #return Harvestings.query.filter(Harvestings.bbox.ST_Within('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').limit(50).all()
+
+def get_harvest_by_bbox_theme(minx, miny, maxx, maxy, theme):
+    harvesting = Harvestings.Harvestings.query.filter(Harvestings.bbox.ST_Intersects('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).all()
+    search = "%{}%".format(theme)
+    #print(search)
+    return harvesting.query.filter(harvesting.name.ilike(search)).all()
+
 
 def save_changes(data):
     db.session.add(data)

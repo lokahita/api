@@ -56,6 +56,23 @@ class HarvestBbox(Resource):
         """list of harvestings by bbox"""
         return get_harvest_by_bbox(xmin, ymin, xmax, ymax) 
 
+
+
+@api.route('/bbox/<float(signed=True):xmin>/<float(signed=True):ymin>/<float(signed=True):xmax>/<float(signed=True):ymax>')
+@api.param('xmin', 'xmin')
+@api.param('ymin', 'ymin')
+@api.param('xmax', 'xmax')
+@api.param('ymax', 'ymax')
+# @api.response(404, 'User not found.')
+class HarvestBboxTheme(Resource):
+    @api.doc('list of harvestings by bbox')
+    @api.marshal_list_with(_schema2, envelope='data')
+    # @token_required
+    def get(self, xmin, ymin, xmax, ymax):
+        """list of harvestings by bbox"""
+        return get_harvest_by_bbox(xmin, ymin, xmax, ymax) 
+
+
 @api.route('/identifier/<string:id>')
 @api.param('id', 'identifier')
 # @api.response(404, 'User not found.')

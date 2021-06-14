@@ -151,6 +151,20 @@ class ThemesDto:
         'name': fields.String(required=True, description='theme name')
     })
 
+class KeywordsDto:
+    api = Namespace('keywords', description='keywords related operations')
+    schema = api.model('keywords', {
+        'id': fields.Integer(dump_only=True),
+        'name': fields.String(required=True, description='keywords name')
+    })
+    entry = api.model('keywords', {
+        'name': fields.String(required=True, description='keywords name')
+    })
+    update = api.model('keywords', {
+        'id': fields.Integer(required=True, description='id'),
+        'name': fields.String(required=True, description='keywords name')
+    })
+
 class AuthDto:
     api = Namespace('auth', description='authentication related operations')
     user_auth = api.model('auth_details', {

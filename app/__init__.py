@@ -14,9 +14,10 @@ from .main.controller.themes_controller import api as themes_ns
 from .main.controller.user_controller import api as user_ns
 from .main.controller.statistic_controller import api as statistic_ns
 from .main.controller.metadata_controller import api as metadata_ns
+from .main.controller.keywords_controller import api as keywords_ns
 from .main.controller.proxy_controller import api as proxy_ns
 
-blueprint = Blueprint('api', __name__,url_prefix='/api')
+blueprint = Blueprint('api', __name__,url_prefix='/geoportal/api')
 
 authorizations = {
     'apikey': {
@@ -39,6 +40,7 @@ api.add_namespace(continents_ns)
 api.add_namespace(countries_ns)
 api.add_namespace(download_ns)
 api.add_namespace(harvest_ns)
+api.add_namespace(keywords_ns)
 api.add_namespace(metadata_ns)
 api.add_namespace(organizations_ns)
 api.add_namespace(proxy_ns)

@@ -5,3 +5,5 @@ __pycache__/*
 ./main/service/__pycache__/*
 ./main/util/__pycache__/*
 *.pyc
+
+/migrations
