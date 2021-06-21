@@ -23,15 +23,19 @@ def harvest_an_organization(id):
         get_csw_records(csw, pagesize=10, maxrecords=3000)
         #data = []
         total = 0
+        #print(csw.records)
         for rec in csw.records:
             #print(csw.records[rec].title , " ", csw.records[rec].type, " ", csw.records[rec].modified)
             if csw.records[rec].type == 'dataset' :
-                if  csw.records[rec].modified == None:
+                
+                if csw.records[rec].modified == None:
                     mod = datetime.datetime.strptime('1900-01-01', '%Y-%m-%d')
                 elif len(csw.records[rec].modified) == 10:
                     mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%d")
-                elif len(csw.records[rec].modified) > 19:
-                    mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S.%f")
+                elif len(csw.records[rec].modified) == 20:
+                    mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%SZ")
+                elif len(csw.records[rec].modified) > 20:
+                    mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S.%fZ")
                 else:
                     mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S")
                 minx = csw.records[rec].bbox.minx
@@ -50,7 +54,9 @@ def harvest_an_organization(id):
                     bbox='SRID=4326;POLYGON(('+minx+' '+miny+','+maxx+' '+miny+','+maxx+' '+maxy+','+minx+' '+maxy+','+minx+' '+miny+'))'
                 )
                 save_changes(new_harvest)
-                total = total+1          
+                
+                total = total+1
+                
         response_object = {
                 'status': 'ok',
                 'name': row.name,
@@ -211,8 +217,6 @@ def get_count_year():
     #        'data': jsonify([dict(row) for row in result])
     #}
     return result_dict, 200
-
-
 
 
 def get_limit(order="title", page=0, page_size=None):
