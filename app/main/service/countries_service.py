@@ -9,7 +9,7 @@ from owslib.csw import CatalogueServiceWeb
 
 def get_a_country(id):
     #query =  db.session.query(Countries.name, Countries.geom.ST_Envelope().ST_AsTEXT(), Countries.geom.ST_AsGeoJSON()).filter(Countries.id == id).first()
-    query =  db.session.query(Countries.name, Countries.geom.ST_Envelope().ST_AsGeoJSON(), Countries.geom.ST_Envelope().ST_Centroid().ST_AsGeoJSON(), Countries.geom.ST_AsGeoJSON()).filter(Countries.id == id).first()
+    query =  db.session.query(Countries.name, Countries.geom.ST_Transform(3857).ST_Envelope().ST_AsGeoJSON(), Countries.geom.ST_Envelope().ST_AsGeoJSON(), Countries.geom.ST_Transform(3857).ST_AsGeoJSON()).filter(Countries.id == id).first()
     #print(query)
     if (query):
         #print(query[1])

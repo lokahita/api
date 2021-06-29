@@ -8,7 +8,7 @@ from flask.json import jsonify
 import json
 
 def list_year():
-    result = db.session.query(extract('year',Harvestings.modified).label('year')).order_by(desc('year')).distinct().all()
+    result = db.session.query(extract('year',Harvestings.publication_date).label('year')).order_by(desc('year')).distinct().all()
     #row = Harvestings.query.order_by('title').first()
     results = [dict(row) for row in result]
     #results = [list(row) for row in result]

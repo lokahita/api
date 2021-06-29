@@ -8,7 +8,7 @@ from flask.json import jsonify
 
 def get_a_region(id):
     #query =  db.session.query(Countries.name, Countries.geom.ST_Envelope().ST_AsTEXT(), Countries.geom.ST_AsGeoJSON()).filter(Countries.id == id).first()
-    query =  db.session.query(Regions.name, Regions.geom.ST_Envelope().ST_AsGeoJSON(), Regions.geom.ST_Envelope().ST_Centroid().ST_AsGeoJSON(), Regions.geom.ST_AsGeoJSON()).filter(Regions.id == id).first()
+    query =  db.session.query(Regions.name, Regions.geom.ST_Transform(3857).ST_Envelope().ST_AsGeoJSON(), Regions.geom.ST_Envelope().ST_AsGeoJSON(), Regions.geom.ST_Transform(3857).ST_AsGeoJSON()).filter(Regions.id == id).first()
     #print(query)
     if (query):
         #print(query[1])

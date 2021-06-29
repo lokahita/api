@@ -8,6 +8,7 @@ from sqlalchemy import func, extract, desc
 from flask.json import jsonify
 from owslib.csw import CatalogueServiceWeb
 import json
+from pyproj import Proj, transform
 
 # convert to string
 #input = json.dumps({'id': id })
@@ -26,37 +27,60 @@ def harvest_an_organization(id):
         #print(csw.records)
         for rec in csw.records:
             #print(csw.records[rec].title , " ", csw.records[rec].type, " ", csw.records[rec].modified)
-            if csw.records[rec].type == 'dataset' :
-                
-                if csw.records[rec].modified == None:
-                    mod = datetime.datetime.strptime('1900-01-01', '%Y-%m-%d')
-                elif len(csw.records[rec].modified) == 10:
-                    mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%d")
-                elif len(csw.records[rec].modified) == 20:
-                    mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%SZ")
-                elif len(csw.records[rec].modified) > 20:
-                    mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S.%fZ")
-                else:
-                    mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S")
-                minx = csw.records[rec].bbox.minx
-                miny = csw.records[rec].bbox.miny
-                maxx = csw.records[rec].bbox.maxx
-                maxy = csw.records[rec].bbox.maxy
+            if csw.records[rec].identifier:
+                '''
+                if csw.records[rec].type == 'dataset' :
+                    
+                    if csw.records[rec].modified == None:
+                        mod = datetime.datetime.strptime('1900-01-01', '%Y-%m-%d')
+                    elif len(csw.records[rec].modified) == 10:
+                        mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%d")
+                    elif len(csw.records[rec].modified) == 20:
+                        csw.records[rec].datestampmod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%SZ")
+                    elif len(csw.records[rec].modified) > 20:
+                        mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S.%fZ")
+                    else:
+                        mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S")
+                    minx = csw.records[rec].bbox.minx
+                    miny = csw.records[rec].bbox.miny
+                    maxx = csw.records[rec].bbox.maxx
+                    maxy = csw.records[rec].bbox.maxy
+                    #print(csw.records[rec].bbox.minx)
+                    ''
+                    inProj = Proj('epsg:4326')
+                    outProj = Proj('epsg:3857')
+                    x1,y1 = minx,miny
+                    x2,y2 = transform(inProj,outProj,x1,y1)
+                    x3,y3 = maxx,maxy
+                    x4,y4 = transform(inProj,outProj,x3,y3)
+                    print(x1,y1)
+                    print(x2,y2)
+                    print(x3,y3)
+                    print(x4,y4)
+                '''
+                minx = csw.records[rec].identification.bbox.minx
+                miny = csw.records[rec].identification.bbox.miny
+                maxx = csw.records[rec].identification.bbox.maxx
+                maxy = csw.records[rec].identification.bbox.maxy
+                tipe = ""
+                if csw.records[rec].identification.spatialrepresentationtype:
+                    tipe=csw.records[rec].identification.spatialrepresentationtype[0]
                 new_harvest = Harvestings(
                     organization_id=row.id,
-                    title=csw.records[rec].title,
-                    data_type=csw.records[rec].type,
-                    abstract=csw.records[rec].abstract,
+                    title=csw.records[rec].identification.title,
+                    data_type=tipe,
+                    abstract=csw.records[rec].identification.abstract,
                     identifier=csw.records[rec].identifier,
-                    modified=mod,
-                    references=json.dumps(csw.records[rec].references),
-                    subjects=json.dumps(csw.records[rec].subjects),
+                    publication_date=csw.records[rec].datestamp,#datetime.datetime.strptime(, "%Y-%m-%dT%H:%M:%SZ"),
+                    distributions=json.dumps([i.__dict__ for i in csw.records[rec].distribution.online]),
+                    categories=json.dumps([i for i in csw.records[rec].identification.topiccategory]),
+                    keywords=json.dumps([i for i in csw.records[rec].identification.keywords]),
+                    #bbox='SRID=3857;POLYGON(('+str(x2)+' '+str(y2)+','+str(x4)+' '+str(y2)+','+str(x4)+' '+str(y4)+','+str(x2)+' '+str(y4)+','+str(x2)+' '+str(y2)+'))'
                     bbox='SRID=4326;POLYGON(('+minx+' '+miny+','+maxx+' '+miny+','+maxx+' '+maxy+','+minx+' '+maxy+','+minx+' '+miny+'))'
                 )
-                save_changes(new_harvest)
-                
+                save_changes(new_harvest) 
                 total = total+1
-                
+
         response_object = {
                 'status': 'ok',
                 'name': row.name,
@@ -89,6 +113,8 @@ def get_csw_records(csw, pagesize=10, maxrecords=1000):
             startposition=startposition,
             maxrecords=pagesize,
             sortby=sortby,
+            outputschema="http://www.isotc211.org/2005/gmd",
+            esn='full'
         )
         csw_records.update(csw.records)
         if csw.results["nextrecord"] == 0:
@@ -116,7 +142,8 @@ def get_harvest_by_identifier(id):
     return Harvestings.query.filter_by(identifier=id).order_by('title').first()
 
 def get_bbox_by_identifier(id):
-    query =  db.session.query(Harvestings.bbox.ST_AsGeoJSON()).filter(Harvestings.identifier == id).first()
+    #query =  db.session.query(Harvestings.bbox.ST_AsGeoJSON()).filter(Harvestings.identifier == id).first()
+    query =  db.session.query(Harvestings.bbox.ST_Transform(3857).ST_ASGeoJSON()).filter(Harvestings.identifier == id).first()
     if (query):
         #print(query[1])
         response_object = {
@@ -132,12 +159,33 @@ def get_bbox_by_identifier(id):
                 'message': 'id not found',
             }
 
-    return response_object, 200
-    
+    return response_object, 200  
 
 #query = session.query(Lake).filter(Lake.geom.ST_Contains('POINT(4 1)'))
 def get_harvest_by_bbox(minx, miny, maxx, maxy):
-    return Harvestings.query.filter(Harvestings.bbox.ST_Intersects('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').all()
+    if minx == -133044556.246885:
+        return Harvestings.query.order_by(Harvestings.title).all()
+    else:
+        print(minx, miny, maxx, maxy)
+        inProj = Proj('epsg:3857')
+        outProj = Proj('epsg:4326')
+        miny, minx = transform(inProj,outProj,minx,miny)
+        maxy, maxx = transform(inProj,outProj,maxx,maxy)
+        return Harvestings.query.filter(Harvestings.bbox.ST_ASText() != 'POLYGON((-180 -90,180 -90,180 90,-180 90,-180 -90))').filter(Harvestings.bbox.ST_Intersects('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').all()
+    #else:
+        #print(minx, miny, maxx, maxy)
+        #harvesting = Harvestings.query.filter(Harvestings.bbox.ST_Intersects('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).all()
+        #search = "%{}%".format('forest')
+        #print(search)
+        #return harvesting.query.filter(harvesting.name.ilike(search)).all()
+
+        #non_empty =  Harvestings.query.filter(Harvestings.bbox.ST_ASText() != 'POLYGON((-180 -90,180 -90,180 90,-180 90,-180 -90))').all()
+        #if non_empty:
+            #print(type(non_empty))
+        #    return non_empty.filter(non_empty.bbox.ST_Transform(3857).ST_Intersects('SRID=3857;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').all()
+        #else:
+        #    return None
+        #return Harvestings.query.filter(Harvestings.bbox.ST_Intersects('SRID=3857;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').all()
     #.limit(100)
     #return Harvestings.query.filter(Harvestings.bbox.ST_Within('SRID=4326;POLYGON(('+str(minx)+' '+str(miny)+','+str(maxx)+' '+str(miny)+','+str(maxx)+' '+str(maxy)+','+str(minx)+' '+str(maxy)+','+str(minx)+' '+str(miny)+'))')).order_by('title').limit(50).all()
 

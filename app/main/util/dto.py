@@ -128,9 +128,10 @@ class HarvestingsDto:
         'organizations' : fields.Nested(OrganizationsDto().schema2, only=['id', 'name'], required=True),
         'data_type': fields.String(required=True, description='data type'),
         'identifier': fields.String(required=True, description='identifier'),
-        'modified': fields.DateTime(required=True, description='data type'),
-        'references': fields.String(required=True, description='data type'),
-        'subjects': fields.String(required=True, description='subjects')
+        'publication_date': fields.DateTime(required=True, description='data type'),
+        'distributions': fields.String(required=True, description='data type'),
+        'categories': fields.String(required=True, description='subjects'),
+        'keywords': fields.String(required=True, description='keywords')
     })
     delete = api.model('metadata', {
         'id': fields.Integer(required=True, description='id'),
