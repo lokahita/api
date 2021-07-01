@@ -14,5 +14,5 @@ class QueryDtoList(Resource):
     #@api.marshal_list_with(_schema, envelope='data')
     #@admin_token_required
     def get(self):
-        """List all organizations"""
+        """List all year of harvested metadata"""
         return list_year()
