@@ -17,7 +17,15 @@ from .main.controller.metadata_controller import api as metadata_ns
 from .main.controller.keywords_controller import api as keywords_ns
 from .main.controller.proxy_controller import api as proxy_ns
 
-blueprint = Blueprint('api', __name__,url_prefix='/geoportal/api')
+# Import apidoc for monkey patching
+from flask_restplus.apidoc import apidoc
+
+URL_PREFIX = '/geoportal/api'
+
+# Make a global change setting the URL prefix for the swaggerui at the module level
+apidoc.url_prefix = URL_PREFIX
+
+blueprint = Blueprint('api', __name__,url_prefix=URL_PREFIX)
 
 authorizations = {
     'apikey': {
@@ -32,8 +40,8 @@ api = Api(blueprint,
           version='1.0',
           description='Geoportal Web Service API End Points',
           authorizations=authorizations,
-          security='apikey',
-          )
+          security='apikey'
+        )
 
 api.add_namespace(auth_ns)
 api.add_namespace(continents_ns)
