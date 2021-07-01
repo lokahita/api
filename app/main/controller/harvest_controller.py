@@ -3,7 +3,7 @@ from flask_restplus import Resource
 #import pysftp as sftp
 import os
 from ..util.dto import HarvestingsDto
-# from ..util.decorator import token_required
+from ..util.decorator import token_required, admin_token_required
 from ..service.harvest_service import harvest_an_organization, get_all, get_harvest_by_organization_id, get_harvest_by_bbox, get_harvest_by_identifier, delete_harvested, get_count_all, get_count_organization, get_count_year, get_limit, get_latest, get_alphabet, get_bbox_by_identifier
 
 api = HarvestingsDto.api
@@ -26,7 +26,7 @@ class HarvestingsDtoList(Resource):
 class HarvestPulls(Resource):
     @api.doc('harvest an organization')
     # @api.marshal_with(_download)
-    # @token_required
+    @admin_token_required
     def get(self, id):
         """harvest an organization given its identifier"""
         return harvest_an_organization(id) 
@@ -100,7 +100,7 @@ class HarvestDelete(Resource):
     @api.response(201, 'Harvest successfully deleted.')
     @api.doc('delete a harvested data')
     @api.expect(_delete, validate=True)
-    #@admin_token_required
+    @admin_token_required
     def post(self):
         """Delete a harvested data"""
         data = request.json

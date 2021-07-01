@@ -3,7 +3,7 @@ from flask_restplus import Resource
 
 from ..util.dto import ThemesDto
 from ..service.themes_service import get_a_theme, get_all, save_new_theme, update_theme
-
+from ..util.decorator import admin_token_required
 api = ThemesDto.api
 _schema =  ThemesDto.schema
 _entry =  ThemesDto.entry
@@ -21,6 +21,7 @@ class ThemesDtoList(Resource):
     @api.response(201, 'Theme successfully created.')
     @api.doc('create a new theme')
     @api.expect(_entry, validate=True)
+    @admin_token_required
     def post(self):
         """Creates a new Theme """
         data = request.json
@@ -51,6 +52,7 @@ class ThemesUpdate(Resource):
     @api.response(201, 'Theme successfully updated.')
     @api.doc('update a theme')
     @api.expect(_update, validate=True)
+    @admin_token_required
     def post(self):
         """Update a theme """
         data = request.json

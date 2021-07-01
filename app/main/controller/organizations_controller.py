@@ -23,7 +23,7 @@ class OrganizationsDtoList(Resource):
     @api.response(201, 'Organization successfully created.')
     @api.doc('create a new organization')
     @api.expect(_entry, validate=True)
-    #@admin_token_required
+    @admin_token_required
     def post(self):
         """Creates a new Organization """
         data = request.json
@@ -53,7 +53,7 @@ class OrganizationsUpdate(Resource):
     @api.response(201, 'Organization successfully updated.')
     @api.doc('update an organization')
     @api.expect(_update, validate=True)
-    #@admin_token_required
+    @admin_token_required
     def post(self):
         """Update an Organization """
         data = request.json
@@ -64,7 +64,7 @@ class OrganizationsDelete(Resource):
     @api.response(201, 'Organization successfully deleted.')
     @api.doc('delete an organization')
     @api.expect(_delete, validate=True)
-    #@admin_token_required
+    @admin_token_required
     def post(self):
         """Delete an Organization """
         data = request.json

@@ -27,7 +27,7 @@ class MetadataDtoList(Resource):
     @api.response(201, 'Metadata successfully created.')
     @api.doc('create a new metadata')
     #@api.expect(_entry, validate=True)
-    #@admin_token_required
+    @admin_token_required
     def post(self):
         """Creates a new Metadata """
         #data = request.json
@@ -70,7 +70,7 @@ class MetadataUpdate(Resource):
     @api.response(201, 'Metadata successfully updated.')
     @api.doc('update a metadata')
     @api.expect(_update, validate=True)
-    #@admin_token_required
+    @admin_token_required
     def post(self):
         """Update a Metadata"""
         data = request.json
@@ -81,7 +81,7 @@ class MetadataDelete(Resource):
     @api.response(201, 'Metadata successfully deleted.')
     @api.doc('delete an metadata')
     @api.expect(_delete, validate=True)
-    #@admin_token_required
+    @admin_token_required
     def post(self):
         """Delete an Metadata """
         data = request.json

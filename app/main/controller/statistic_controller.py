@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 from ..model.m_statistic import Statistic, StatisticSchema
 from marshmallow import ValidationError
-
+from ..util.decorator import admin_token_required, token_required
 from ..util.dto import StatisticDto
 
 api = StatisticDto.api
@@ -14,12 +14,13 @@ class StatisticList(Resource):
     @api.doc('list_of_statistic')
     @api.marshal_list_with(_statistic, envelope='data')
     def get(self):
-        """List all tatistic """
+        """List all statistic """
         return Statistic.get_all_statistic()
 
     @api.response(200, 'Statistic successfully created.')
     @api.doc('create a new statistic')
     @api.expect(_statistic, validate=True)
+    @token_required
     def post(self):
         """Creates a new Statistic """
         req_data = request.json
@@ -48,7 +49,8 @@ class StatisticById(Resource):
 @api.route('/delete/<id>', methods=['POST'])
 @api.param('id', 'The Statistic identifier')
 @api.response(404, 'Statistic not found.')
-class StatisticDelete(Resource):     
+class StatisticDelete(Resource):
+    @admin_token_required
     def post(self, id):
         """Delete an statistic"""
         try:
