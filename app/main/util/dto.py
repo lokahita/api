@@ -96,7 +96,9 @@ class MetadataDto:
     schema = api.model('metadata', {
         'id': fields.Integer(dump_only=True),
         'filename': fields.String(required=True, description='metadata name'),
-        'time_uploaded': fields.DateTime(description='datetime metadata uploaded'),
+        'validated': fields.Boolean(),
+        'status': fields.Boolean(),
+        'time_uploaded': fields.DateTime(description='datetime metadata uploaded')
     })
     schema2 = api.model('metadata', {
         'id': fields.Integer(dump_only=True),
@@ -105,13 +107,44 @@ class MetadataDto:
     entry = api.model('metadata', {
         'filename': fields.String(required=True, description='metadata name'),
     })
-    update = api.model('metadata', {
+    update = api.model('metadata_update', {
         'id': fields.Integer(required=True, description='id'),
-        'filename': fields.String(required=True, description='metadata name'),
+        'filename': fields.String(required=True, description='file name'),
     })
     delete = api.model('metadata', {
         'id': fields.Integer(required=True, description='id'),
     })
+
+class ContributionDto:
+    api = Namespace('contribution', description='contribution related operations')
+    schema = api.model('contributions', {
+        'id': fields.Integer(dump_only=True),
+        'data_name': fields.String(required=True, description='data name'),
+        'filename': fields.String(required=True, description='file name'),
+        'time_uploaded': fields.DateTime(description='datetime metadata uploaded'),
+        'url': fields.String(required=True, description='file name')
+    })
+    schema2 = api.model('contributions', {
+        'id': fields.Integer(dump_only=True),
+        'name': fields.String(required=True, description='data name'),
+        'filename': fields.String(required=True, description='file name')
+    })
+    entry = api.model('Contributions', {
+        'name': fields.String(required=True, description='data name'),
+        'filename': fields.String(required=True, description='file name'),
+        'username': fields.String(required=True, description='username'),
+        'url': fields.String(required=True, description='url')
+    })
+    update = api.model('contributions', {
+        'id': fields.Integer(required=True, description='id'),
+        'name': fields.String(required=True, description='data name'),
+        'filename': fields.String(required=True, description='file name'),
+        'url':fields.String(required=True, description='url')
+    })
+    delete = api.model('contribution', {
+        'id': fields.Integer(required=True, description='id'),
+    })
+
 
 class HarvestingsDto:
     api = Namespace('harvestings', description='harvestings related operations')

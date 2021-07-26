@@ -3,6 +3,8 @@ import datetime
 
 from app.main import db
 from app.main.model.metadata import Metadata
+from app.main.model.user import User
+
 from sqlalchemy import func
 from flask.json import jsonify
 from owslib.csw import CatalogueServiceWeb
@@ -24,6 +26,7 @@ VALIDATION_PATH = os.path.join(os.getcwd(),'iso19139/gmd/gmd.xsd')
 PARSER = etree.XMLParser(resolve_entities=False)
 from owslib.iso import MD_ImageDescription
 import json
+from geolinks import sniff_link
 
 class StaticContext(object):
     """core configuration"""
@@ -3033,10 +3036,13 @@ def get_csw_records(csw, pagesize=10, maxrecords=1000):
             break
     csw.records.update(csw_records)
 
-def save_new_metadata(filename):
+def save_new_metadata(filename, username):
     metadata = Metadata.query.filter_by(filename=filename).first()
+    print(filename, ' ' , username)
+    print(metadata)
     if not metadata:
         if validate_xml(os.path.join(UPLOAD_FOLDER,filename)) == 'Valid':
+            '''
             CP = configparser.ConfigParser(interpolation=EnvInterpolation())
             CFG = os.path.join(os.getcwd(), 'pycsw.cfg')
             with open(CFG) as f:
@@ -3058,9 +3064,12 @@ def save_new_metadata(filename):
                 print('XML document "%s" is not well-formed')
 
             REPO = Repository(DATABASE, CONTEXT, TABLE)
+            '''
 
             try:
+                '''
                 record = parse_record(CONTEXT, exml, REPO)
+                #get user
                 for rec in record:
                     print(rec.identifier)
                     print(rec.typename)
@@ -3068,20 +3077,31 @@ def save_new_metadata(filename):
                     print(rec.mdsource)
                     print(rec.insert_date)
                     REPO.insert(rec, 'local', get_today_and_now())
-                
-                base = 'http://localhost:7001/csw'
-                csw = CatalogueServiceWeb(base, timeout=30)
-                new_metadata = Metadata(
-                    filename=filename,
-                    time_uploaded=datetime.datetime.utcnow(),
-                    user_id = 1
-                )
-                save_changes(new_metadata)
-                response_object = {
-                    'status': 'success',
-                    'message': 'Successfully inserted.'
-                }
-                return response_object, 201
+                '''
+                user = User.query.filter_by(username=username).first()
+                if not user:
+                    response_object = {
+                        'status': 'fail',
+                        'message': 'Username not found',
+                    }
+                    return response_object, 200
+                else:
+
+                    #base = 'http://localhost:7001/csw'
+                    #csw = CatalogueServiceWeb(base, timeout=30)
+
+                    new_metadata = Metadata(
+                        filename=filename,
+                        time_uploaded=datetime.datetime.utcnow(),
+                        user_id = user.id,
+                        status = False
+                    )
+                    save_changes(new_metadata)
+                    response_object = {
+                        'status': 'success',
+                        'message': 'Successfully inserted.'
+                    }
+                    return response_object, 201
             except Exception as err:
                 print('Could not parse "%s" as an XML record')
                 print(err)
@@ -3113,7 +3133,7 @@ def save_changes(data):
 def update_metadata(data):
     metadata = Metadata.query.filter_by(id=data['id']).first()
     if metadata:
-        setattr(metadata, 'filename', data['name'])
+        setattr(metadata, 'filename', data['filename'])
         db.session.commit()
         response_object = {
             'status': 'success',

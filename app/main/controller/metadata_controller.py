@@ -3,7 +3,7 @@ from flask_restplus import Resource
 import os
 from ..util.dto import MetadataDto
 from ..service.metadata_service import get_a_metadata, get_all, save_new_metadata, update_metadata, delete_metadata
-from ..util.decorator import admin_token_required
+from ..util.decorator import admin_token_required, token_required
 
 api = MetadataDto.api
 _schema =  MetadataDto.schema
@@ -27,13 +27,18 @@ class MetadataDtoList(Resource):
     @api.response(201, 'Metadata successfully created.')
     @api.doc('create a new metadata')
     #@api.expect(_entry, validate=True)
-    @admin_token_required
+    #@admin_token_required
+    @token_required
     def post(self):
         """Creates a new Metadata """
         #data = request.json
 
         file = request.files['file']
+        #username= request['username']
         print(file)
+        #print(request.__dict__)
+        #print(request.form['username'])
+        username = request.form['username']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
@@ -44,7 +49,7 @@ class MetadataDtoList(Resource):
             return response_object, 200
         else:
             file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-            return save_new_metadata(file.filename)
+            return save_new_metadata(file.filename, username)
 
 @api.route('/id/<int:id>')
 @api.param('id', 'The Metadata id')
@@ -70,7 +75,7 @@ class MetadataUpdate(Resource):
     @api.response(201, 'Metadata successfully updated.')
     @api.doc('update a metadata')
     @api.expect(_update, validate=True)
-    @admin_token_required
+    @token_required
     def post(self):
         """Update a Metadata"""
         data = request.json
@@ -81,7 +86,7 @@ class MetadataDelete(Resource):
     @api.response(201, 'Metadata successfully deleted.')
     @api.doc('delete an metadata')
     @api.expect(_delete, validate=True)
-    @admin_token_required
+    @token_required
     def post(self):
         """Delete an Metadata """
         data = request.json
