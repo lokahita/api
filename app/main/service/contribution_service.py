@@ -53,6 +53,18 @@ def get_a_contribution(id):
 def get_all():
     return Contributions.query.order_by('data_name').all()
 
+def get_all_username(user):
+    user = User.query.filter_by(username=user).first()
+    #print(user.__dict__)
+    if user:
+        return Contributions.query.filter_by(user_id=user.id).order_by('time_uploaded').all()
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'User not found',
+        }
+        return response_object, 200
+
 def save_changes(data):
     db.session.add(data)
     db.session.commit()

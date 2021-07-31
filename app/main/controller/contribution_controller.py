@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 import os
 from ..util.dto import ContributionDto
-from ..service.contribution_service import get_a_contribution, get_all, save_new_contribution, update_contribution, delete_contribution
+from ..service.contribution_service import get_a_contribution, get_all, get_all_username, save_new_contribution, update_contribution, delete_contribution
 from ..util.decorator import admin_token_required, token_required
 
 api = ContributionDto.api
@@ -51,6 +51,17 @@ class Contribution(Resource):
         	return response_object, 404
         else:
             return row
+
+@api.route('/username/<user>')
+@api.param('user', 'The Contribution username')
+@api.response(404, 'Contribution not found.')
+class Contribution(Resource):
+    @api.doc('get a contribution')
+    @api.marshal_list_with(_schema, envelope='data')
+    #@admin_token_required
+    def get(self, user):
+        """get a contribution given its username"""
+        return get_all_username(user)
 
 @api.route('/update/')
 class ContributionUpdate(Resource):

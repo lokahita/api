@@ -8,7 +8,7 @@ class Contributions(db.Model):
     data_name = db.Column(db.String(100), nullable=False)
     filename = db.Column(db.String(100), nullable=False)
     time_uploaded = db.Column(db.DateTime, nullable=False)
-    url = db.Column(db.String(255), nullable=False)
+    url = db.Column(db.String(300), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     users = db.relationship('User', backref=db.backref('parent_contribution', lazy='dynamic'))
 

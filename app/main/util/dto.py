@@ -110,8 +110,9 @@ class MetadataDto:
     update = api.model('metadata_update', {
         'id': fields.Integer(required=True, description='id'),
         'filename': fields.String(required=True, description='file name'),
+        'status': fields.Boolean()
     })
-    delete = api.model('metadata', {
+    delete = api.model('metadata_delete', {
         'id': fields.Integer(required=True, description='id'),
     })
 
@@ -219,6 +220,9 @@ class UserDto:
         'email': fields.String(required=True, description='user email address'),
         'username': fields.String(required=True, description='user username'),
         'password': fields.String(required=True, description='user password')
+    })
+    delete = api.model('user_delete', {
+        'public_id': fields.String(required=True, description='public_id'),
     })
 
 class ProxyDto:

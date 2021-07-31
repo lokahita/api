@@ -2,7 +2,7 @@ from flask import request, jsonify, json
 from flask_restplus import Resource
 
 from ..util.dto import UserDto
-from ..service.user_service import save_new_user, get_all_users, get_a_user, get_a_user_email, get_a_user_username
+from ..service.user_service import save_new_user, get_all_users, get_a_user, get_a_user_email, get_a_user_username, delete_user
 from ..util.decorator import admin_token_required, token_required
 from ..util.pagination import get_paginated_list
 
@@ -11,6 +11,7 @@ from ..util.pagination import get_paginated_list
 api = UserDto.api
 _user = UserDto.user
 _schema = UserDto.schema
+_delete = UserDto.delete
 
 @api.route('/')
 #@api.header('Authorization: Bearer', 'JWT TOKEN', required=True)
@@ -98,3 +99,15 @@ class UserUsername(Resource):
             api.abort(404)
         else:
             return user
+
+
+@api.route('/delete/')
+class UserDelete(Resource):
+    @api.response(201, 'User successfully deleted.')
+    @api.doc('delete an user')
+    @api.expect(_delete, validate=True)
+    @token_required
+    def post(self):
+        """Delete an User """
+        data = request.json
+        return delete_user(data=data)

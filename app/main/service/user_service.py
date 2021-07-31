@@ -39,7 +39,7 @@ def save_new_user(data):
         return response_object, 409
 
 def get_all_users():
-    return User.query.all()
+    return User.query.filter_by(admin=False).all()
 
 def get_a_user(public_id):
     return User.query.filter_by(public_id=public_id).first()
@@ -70,3 +70,21 @@ def generate_token(user):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
+
+
+def delete_user(data):
+    user = User.query.filter_by(public_id=data['public_id']).first()
+    if user:
+        User.query.filter_by(public_id=data['public_id']).delete()
+        db.session.commit()
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully deleted.'
+        }
+        return response_object, 201
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'User not found',
+        }
+        return response_object, 200
