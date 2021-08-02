@@ -2,12 +2,13 @@ from flask import request
 from flask_restplus import Resource
 
 from ..util.dto import KeywordsDto
-from ..service.keywords_service import get_a_keyword, get_all, save_new_keyword, update_keyword
-
+from ..service.keywords_service import get_a_keyword, get_all, save_new_keyword, update_keyword, delete_keyword
+from ..util.decorator import admin_token_required
 api = KeywordsDto.api
 _schema =  KeywordsDto.schema
 _entry =  KeywordsDto.entry
 _update =  KeywordsDto.update
+_delete =  KeywordsDto.delete
 
 @api.route('/')
 class KeywordsDtoList(Resource):
@@ -21,6 +22,7 @@ class KeywordsDtoList(Resource):
     @api.response(201, 'Keywords successfully created.')
     @api.doc('create a new keywords')
     @api.expect(_entry, validate=True)
+    @admin_token_required
     def post(self):
         """Creates a new Keywords """
         data = request.json
@@ -51,7 +53,19 @@ class KeywordUpdate(Resource):
     @api.response(201, 'Keyword successfully updated.')
     @api.doc('update a keyword')
     @api.expect(_update, validate=True)
+    @admin_token_required
     def post(self):
         """Update a keyword"""
         data = request.json
         return update_keyword(data=data)
+
+@api.route('/delete/')
+class KeywordDelete(Resource):
+    @api.response(201, 'Keyword successfully deleted.')
+    @api.doc('delete a keyword')
+    @api.expect(_delete, validate=True)
+    @admin_token_required
+    def post(self):
+        """Delete a Keyword """
+        data = request.json
+        return delete_keyword(data=data)

@@ -52,7 +52,7 @@ def update_keyword(data):
         }
         return response_object, 200
 
-def delete_row(data):
+def delete_keyword(data):
     row = Keywords.query.filter_by(id=data['id']).first()
     if row:
         Keywords.query.filter_by(id=data['id']).delete()

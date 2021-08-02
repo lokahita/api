@@ -202,6 +202,9 @@ class KeywordsDto:
         'id': fields.Integer(required=True, description='id'),
         'name': fields.String(required=True, description='keywords name')
     })
+    delete = api.model('delete_keywords', {
+        'id': fields.Integer(required=True, description='id'),
+    })
 
 class AuthDto:
     api = Namespace('auth', description='authentication related operations')
