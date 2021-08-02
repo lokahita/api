@@ -185,6 +185,9 @@ class ThemesDto:
         'id': fields.Integer(required=True, description='id'),
         'name': fields.String(required=True, description='theme name')
     })
+    delete = api.model('delete_theme', {
+        'id': fields.Integer(required=True, description='id'),
+    })
 
 class KeywordsDto:
     api = Namespace('keywords', description='keywords related operations')

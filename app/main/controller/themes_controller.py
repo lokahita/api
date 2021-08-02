@@ -2,12 +2,13 @@ from flask import request
 from flask_restplus import Resource
 
 from ..util.dto import ThemesDto
-from ..service.themes_service import get_a_theme, get_all, save_new_theme, update_theme
+from ..service.themes_service import get_a_theme, get_all, save_new_theme, update_theme, delete_theme
 from ..util.decorator import admin_token_required
 api = ThemesDto.api
 _schema =  ThemesDto.schema
 _entry =  ThemesDto.entry
 _update =  ThemesDto.update
+_delete =  ThemesDto.delete
 
 @api.route('/')
 class ThemesDtoList(Resource):
@@ -57,3 +58,14 @@ class ThemesUpdate(Resource):
         """Update a theme """
         data = request.json
         return update_theme(data=data)
+
+@api.route('/delete/')
+class ThemesDelete(Resource):
+    @api.response(201, 'Theme successfully deleted.')
+    @api.doc('delete a theme')
+    @api.expect(_delete, validate=True)
+    @admin_token_required
+    def post(self):
+        """Delete a Theme """
+        data = request.json
+        return delete_theme(data=data)
