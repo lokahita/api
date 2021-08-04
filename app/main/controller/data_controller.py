@@ -60,6 +60,7 @@ class DataDtoList(Resource):
 
 def upload_geoserver(filename, username):
     print(filename, username)
+    print(filename.replace('.zip', ''))
     result = subprocess.run([
     'curl', 
     '-v', 
@@ -70,7 +71,7 @@ def upload_geoserver(filename, username):
     CONTENT,
     '--data-binary',
     '@'+os.path.join(UPLOAD_FOLDER,filename),
-    GEOSERVER + 'workspaces/'+WS+'/datastores/'+ username+'/file.shp'
+    GEOSERVER + 'workspaces/'+WS+'/datastores/'+ filename.replace('.zip', '_emhayusa') +'/file.shp'
     ], stdout=subprocess.PIPE)
     print(result)
     print(result.stdout.decode('utf-8'))
