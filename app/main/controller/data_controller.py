@@ -55,10 +55,10 @@ class DataDtoList(Resource):
             return response_object, 200
         else:
             file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-            return publish_geoserver(file.filename, username)
+            return upload_geoserver(file.filename, username)
 
 
-def publish_geoserver(filename, username):
+def upload_geoserver(filename, username):
     print(filename, username)
     result = subprocess.run([
     'curl', 
@@ -82,3 +82,51 @@ def publish_geoserver(filename, username):
     return response_object, 201
 
     
+
+@api.route('/publish/')
+class DataPublish(Resource):
+    @api.response(201, 'Data successfully published.')
+    @api.doc('publish a data to geoserver')
+    #@api.expect(_update, validate=True)
+    @token_required
+    def post(self):
+        """publish a Data"""
+        #data = request.json
+        #return update_metadata(data=data)
+        username = request.form['username']
+        path = request.form['path']
+        #shapeFile = request.form['shapeFile']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if username == '':
+            response_object = {
+            'status': 'error',
+            'message': 'Username cannot empty'
+            }
+            return response_object, 200
+        else:
+            #file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+            return publish_geoserver(path, username)
+
+def publish_geoserver(path, username):
+    print(path, username)
+    result = subprocess.run([
+    'curl', 
+    '-v', 
+    '-XPUT', 
+    '-H',
+    AUTH,
+    '-H',
+    "Content-type: text/plain",
+    '--data-raw',
+    path,
+    GEOSERVER + 'workspaces/'+WS+'/datastores/'+ username+'/external.shp'
+    ], stdout=subprocess.PIPE)
+    print(result)
+    print(result.stdout.decode('utf-8'))
+    #url_store = GEOSERVER + 'workspaces/'+WS+'/datastores/' + username + '.json'
+    response_object = {
+                        'status': 'success',
+                        'message': 'Successfully published'
+                    }
+    return response_object, 201
