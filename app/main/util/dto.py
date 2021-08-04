@@ -233,3 +233,6 @@ class UserDto:
 
 class ProxyDto:
     api = Namespace('proxy', description='proxy related operations')
+
+class DataDto:
+    api = Namespace('data', description='data related operations')

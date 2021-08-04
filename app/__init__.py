@@ -14,6 +14,7 @@ from .main.controller.themes_controller import api as themes_ns
 from .main.controller.user_controller import api as user_ns
 from .main.controller.statistic_controller import api as statistic_ns
 from .main.controller.metadata_controller import api as metadata_ns
+from .main.controller.data_controller import api as data_ns
 from .main.controller.contribution_controller import api as contribution_ns
 from .main.controller.keywords_controller import api as keywords_ns
 from .main.controller.proxy_controller import api as proxy_ns
@@ -48,6 +49,7 @@ api.add_namespace(auth_ns)
 api.add_namespace(continents_ns)
 api.add_namespace(contribution_ns)
 api.add_namespace(countries_ns)
+api.add_namespace(data_ns)
 api.add_namespace(download_ns)
 api.add_namespace(harvest_ns)
 api.add_namespace(keywords_ns)
