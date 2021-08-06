@@ -7,6 +7,7 @@ from ..util.decorator import admin_token_required, token_required
 
 api = MetadataDto.api
 _schema =  MetadataDto.schema
+_schemaUser =  MetadataDto.schemaUser
 _entry =  MetadataDto.entry
 _update =  MetadataDto.update
 _delete =  MetadataDto.delete
@@ -18,7 +19,7 @@ UPLOAD_FOLDER = os.path.join(os.getcwd(), 'metadata/uploads')
 @api.route('/')
 class MetadataDtoList(Resource):
     @api.doc('list of metadata')
-    @api.marshal_list_with(_schema, envelope='data')
+    @api.marshal_list_with(_schemaUser, envelope='data')
     #@admin_token_required
     def get(self):
         """List all metadata"""

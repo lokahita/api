@@ -91,30 +91,6 @@ class OrganizationsDto:
         'id': fields.Integer(required=True, description='id'),
     })
 
-class MetadataDto:
-    api = Namespace('metadata', description='metadata related operations')
-    schema = api.model('metadata', {
-        'id': fields.Integer(dump_only=True),
-        'filename': fields.String(required=True, description='metadata name'),
-        'validated': fields.Boolean(),
-        'status': fields.Boolean(),
-        'time_uploaded': fields.DateTime(description='datetime metadata uploaded')
-    })
-    schema2 = api.model('metadata', {
-        'id': fields.Integer(dump_only=True),
-        'filename': fields.String(required=True, description='metadata name')
-    })
-    entry = api.model('metadata', {
-        'filename': fields.String(required=True, description='metadata name'),
-    })
-    update = api.model('metadata_update', {
-        'id': fields.Integer(required=True, description='id'),
-        'filename': fields.String(required=True, description='file name'),
-        'status': fields.Boolean()
-    })
-    delete = api.model('metadata_delete', {
-        'id': fields.Integer(required=True, description='id'),
-    })
 
 class ContributionDto:
     api = Namespace('contribution', description='contribution related operations')
@@ -221,6 +197,10 @@ class UserDto:
         'username': fields.String(required=True, description='user username'),
         'public_id': fields.String(description='user Identifier')
     })
+    username = api.model('user', {
+        'username': fields.String(required=True, description='user username'),
+        'public_id': fields.String(description='user Identifier')
+    })
     user = api.model('user', {
         'fullname': fields.String(required=True, description='user fullname'),
         'email': fields.String(required=True, description='user email address'),
@@ -236,3 +216,37 @@ class ProxyDto:
 
 class DataDto:
     api = Namespace('data', description='data related operations')
+
+class MetadataDto:
+    api = Namespace('metadata', description='metadata related operations')
+    schema = api.model('metadata', {
+        'id': fields.Integer(dump_only=True),
+        'filename': fields.String(required=True, description='metadata name'),
+        'validated': fields.Boolean(),
+        'status': fields.Boolean(),
+        'time_uploaded': fields.DateTime(description='datetime metadata uploaded')
+    })
+    schemaUser = api.model('metadataUser', {
+        'id': fields.Integer(dump_only=True),
+        'filename': fields.String(required=True, description='metadata name'),
+        'validated': fields.Boolean(),
+        'status': fields.Boolean(),
+        'time_uploaded': fields.DateTime(description='datetime metadata uploaded'),
+        'users' : fields.Nested(UserDto().username, required=True)
+    })
+    
+    schema2 = api.model('metadata', {
+        'id': fields.Integer(dump_only=True),
+        'filename': fields.String(required=True, description='metadata name')
+    })
+    entry = api.model('metadata', {
+        'filename': fields.String(required=True, description='metadata name'),
+    })
+    update = api.model('metadata_update', {
+        'id': fields.Integer(required=True, description='id'),
+        'filename': fields.String(required=True, description='file name'),
+        'status': fields.Boolean()
+    })
+    delete = api.model('metadata_delete', {
+        'id': fields.Integer(required=True, description='id'),
+    })
