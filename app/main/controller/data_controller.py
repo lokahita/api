@@ -71,7 +71,7 @@ def upload_geoserver(filename, username):
     CONTENT,
     '--data-binary',
     '@'+os.path.join(UPLOAD_FOLDER,filename),
-    GEOSERVER + 'workspaces/'+WS+'/datastores/'+ filename.replace('.zip', '_emhayusa') +'/file.shp'
+    GEOSERVER + 'workspaces/'+WS+'/datastores/'+ filename.replace('.zip', '_'+username) +'/file.shp'
     ], stdout=subprocess.PIPE)
     print(result)
     print(result.stdout.decode('utf-8'))
@@ -133,7 +133,7 @@ def update_geoserver(filename, username):
     CONTENT,
     '--data-binary',
     '@'+os.path.join(UPLOAD_FOLDER,filename),
-    GEOSERVER + 'workspaces/'+WS+'/datastores/'+ filename.replace('.zip', '_emhayusa') +'/file.shp?update=overwrite'
+    GEOSERVER + 'workspaces/'+WS+'/datastores/'+ filename.replace('.zip', '_'+username) +'/file.shp?update=overwrite'
     ], stdout=subprocess.PIPE)
     print(result)
     print(result.stdout.decode('utf-8'))
