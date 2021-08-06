@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 import os
 from ..util.dto import MetadataDto
-from ..service.metadata_service import get_a_metadata, get_all, save_new_metadata, update_metadata, delete_metadata
+from ..service.metadata_service import get_a_metadata, get_all, get_all_username, save_new_metadata, update_metadata, delete_metadata
 from ..util.decorator import admin_token_required, token_required
 
 api = MetadataDto.api
@@ -69,6 +69,16 @@ class Metadata(Resource):
         	return response_object, 404
         else:
             return row
+@api.route('/username/<user>')
+@api.param('user', 'The username')
+@api.response(404, 'Metadata not found.')
+class Contribution(Resource):
+    @api.doc('get a metadata')
+    @api.marshal_list_with(_schema, envelope='data')
+    #@admin_token_required
+    def get(self, user):
+        """get a metadata given its username"""
+        return get_all_username(user)
 
 @api.route('/update/')
 class MetadataUpdate(Resource):
