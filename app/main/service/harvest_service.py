@@ -9,86 +9,98 @@ from flask.json import jsonify
 from owslib.csw import CatalogueServiceWeb
 import json
 from pyproj import Proj, transform
-
+import os
+import time
 # convert to string
 #input = json.dumps({'id': id })
 
 # load to dict
 #my_dict = json.loads(input) 
+LOG_FOLDER = os.path.join(os.getcwd(), 'data/logs')
 
 def harvest_an_organization(id):
     row = Organizations.query.filter_by(id=id).first()
     if row:
         #print(row.__dict__)
+        #delete all
+        harvesting = Harvestings.query.filter_by(organization_id=id).all()
+        if harvesting:
+            Harvestings.query.filter_by(organization_id=id).delete()
         csw = CatalogueServiceWeb(row.csw, timeout=30)
         get_csw_records(csw, pagesize=10, maxrecords=3000)
         #data = []
         total = 0
         #print(csw.records)
-        for rec in csw.records:
-            #print(csw.records[rec].title , " ", csw.records[rec].type, " ", csw.records[rec].modified)
-            if csw.records[rec].identifier:
-                '''
-                if csw.records[rec].type == 'dataset' :
-                    
-                    if csw.records[rec].modified == None:
-                        mod = datetime.datetime.strptime('1900-01-01', '%Y-%m-%d')
-                    elif len(csw.records[rec].modified) == 10:
-                        mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%d")
-                    elif len(csw.records[rec].modified) == 20:
-                        csw.records[rec].datestampmod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%SZ")
-                    elif len(csw.records[rec].modified) > 20:
-                        mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S.%fZ")
-                    else:
-                        mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S")
-                    minx = csw.records[rec].bbox.minx
-                    miny = csw.records[rec].bbox.miny
-                    maxx = csw.records[rec].bbox.maxx
-                    maxy = csw.records[rec].bbox.maxy
-                    #print(csw.records[rec].bbox.minx)
-                    ''
-                    inProj = Proj('epsg:4326')
-                    outProj = Proj('epsg:3857')
-                    x1,y1 = minx,miny
-                    x2,y2 = transform(inProj,outProj,x1,y1)
-                    x3,y3 = maxx,maxy
-                    x4,y4 = transform(inProj,outProj,x3,y3)
-                    print(x1,y1)
-                    print(x2,y2)
-                    print(x3,y3)
-                    print(x4,y4)
-                '''
-                minx = csw.records[rec].identification.bbox.minx
-                miny = csw.records[rec].identification.bbox.miny
-                maxx = csw.records[rec].identification.bbox.maxx
-                maxy = csw.records[rec].identification.bbox.maxy
-                tipe = ""
-                if csw.records[rec].identification.spatialrepresentationtype:
-                    tipe=csw.records[rec].identification.spatialrepresentationtype[0]
-                new_harvest = Harvestings(
-                    organization_id=row.id,
-                    title=csw.records[rec].identification.title,
-                    data_type=tipe,
-                    abstract=csw.records[rec].identification.abstract,
-                    identifier=csw.records[rec].identifier,
-                    publication_date=csw.records[rec].datestamp,#datetime.datetime.strptime(, "%Y-%m-%dT%H:%M:%SZ"),
-                    distributions=json.dumps([i.__dict__ for i in csw.records[rec].distribution.online]),
-                    categories=json.dumps([i for i in csw.records[rec].identification.topiccategory]),
-                    keywords=json.dumps([i for i in csw.records[rec].identification.keywords]),
-                    #bbox='SRID=3857;POLYGON(('+str(x2)+' '+str(y2)+','+str(x4)+' '+str(y2)+','+str(x4)+' '+str(y4)+','+str(x2)+' '+str(y4)+','+str(x2)+' '+str(y2)+'))'
-                    bbox='SRID=4326;POLYGON(('+minx+' '+miny+','+maxx+' '+miny+','+maxx+' '+maxy+','+minx+' '+maxy+','+minx+' '+miny+'))'
-                )
-                save_changes(new_harvest) 
-                total = total+1
-
-        response_object = {
-                'status': 'ok',
-                'name': row.name,
-                'csw': row.csw,
-                'total': total
-                #'data': data
-        }
-        return response_object, 200
+        filename =  time.strftime(row.name +'_%Y%m%d_%H%M%S_'+str(len(csw.records))+'.txt', time.localtime())
+        with open(os.path.join(LOG_FOLDER, filename), 'w') as f:
+            f.write('Organization:' + row.name)
+            f.write('\nCSW:' + row.csw)
+            f.write('\nTotal:' + str(len(csw.records)))
+            for rec in csw.records:
+                #print(csw.records[rec].title , " ", csw.records[rec].type, " ", csw.records[rec].modified)
+                if csw.records[rec].identifier:
+                    '''
+                    if csw.records[rec].type == 'dataset' :
+                        
+                        if csw.records[rec].modified == None:
+                            mod = datetime.datetime.strptime('1900-01-01', '%Y-%m-%d')
+                        elif len(csw.records[rec].modified) == 10:
+                            mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%d")
+                        elif len(csw.records[rec].modified) == 20:
+                            csw.records[rec].datestampmod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%SZ")
+                        elif len(csw.records[rec].modified) > 20:
+                            mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S.%fZ")
+                        else:
+                            mod = datetime.datetime.strptime(csw.records[rec].modified, "%Y-%m-%dT%H:%M:%S")
+                        minx = csw.records[rec].bbox.minx
+                        miny = csw.records[rec].bbox.miny
+                        maxx = csw.records[rec].bbox.maxx
+                        maxy = csw.records[rec].bbox.maxy
+                        #print(csw.records[rec].bbox.minx)
+                        ''
+                        inProj = Proj('epsg:4326')
+                        outProj = Proj('epsg:3857')
+                        x1,y1 = minx,miny
+                        x2,y2 = transform(inProj,outProj,x1,y1)
+                        x3,y3 = maxx,maxy
+                        x4,y4 = transform(inProj,outProj,x3,y3)
+                        print(x1,y1)
+                        print(x2,y2)
+                        print(x3,y3)
+                        print(x4,y4)
+                    '''
+                    minx = csw.records[rec].identification.bbox.minx
+                    miny = csw.records[rec].identification.bbox.miny
+                    maxx = csw.records[rec].identification.bbox.maxx
+                    maxy = csw.records[rec].identification.bbox.maxy
+                    tipe = ""
+                    if csw.records[rec].identification.spatialrepresentationtype:
+                        tipe=csw.records[rec].identification.spatialrepresentationtype[0]
+                    new_harvest = Harvestings(
+                        organization_id=row.id,
+                        title=csw.records[rec].identification.title,
+                        data_type=tipe,
+                        abstract=csw.records[rec].identification.abstract,
+                        identifier=csw.records[rec].identifier,
+                        publication_date=csw.records[rec].datestamp,#datetime.datetime.strptime(, "%Y-%m-%dT%H:%M:%SZ"),
+                        distributions=json.dumps([i.__dict__ for i in csw.records[rec].distribution.online]),
+                        categories=json.dumps([i for i in csw.records[rec].identification.topiccategory]),
+                        keywords=json.dumps([i for i in csw.records[rec].identification.keywords]),
+                        #bbox='SRID=3857;POLYGON(('+str(x2)+' '+str(y2)+','+str(x4)+' '+str(y2)+','+str(x4)+' '+str(y4)+','+str(x2)+' '+str(y4)+','+str(x2)+' '+str(y2)+'))'
+                        bbox='SRID=4326;POLYGON(('+minx+' '+miny+','+maxx+' '+miny+','+maxx+' '+maxy+','+minx+' '+maxy+','+minx+' '+miny+'))'
+                    )
+                    f.write('\n' + csw.records[rec].identifier + ',' + csw.records[rec].identification.title)
+                    save_changes(new_harvest) 
+                    total = total+1
+                    #print(total)
+            response_object = {
+                    'status': 'ok',
+                    'name': row.name,
+                    'csw': row.csw,
+                    'total': total
+                    #'data': data
+            }
+            return response_object, 200
     else:
         response_object = {
                 'status': 'fail',

@@ -254,3 +254,5 @@ class MetadataDto:
     delete = api.model('metadata_delete', {
         'id': fields.Integer(required=True, description='id'),
     })
+class LogsDto:
+    api = Namespace('logs', description='logs related operations')
