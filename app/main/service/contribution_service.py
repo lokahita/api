@@ -4,6 +4,7 @@ import datetime
 from app.main import db
 from app.main.model.contributions import Contributions
 from app.main.model.user import User
+from app.main.model.metadata import Metadata
 from sqlalchemy import func
 from flask.json import jsonify
 import logging
@@ -106,7 +107,7 @@ def delete_contribution(data):
         return response_object, 200
 
 def get_count_user():
-    query =  db.session.query(User.username, func.count(Contributions.user_id)).join(User).order_by(User.username).group_by(User.username).all()
+    query =  db.session.query(User.username, func.count(Metadata.user_id)).join(User).order_by(User.username).group_by(User.username).all()
     print(query)
     data = []
     for i in query: 
