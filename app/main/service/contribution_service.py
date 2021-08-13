@@ -104,3 +104,21 @@ def delete_contribution(data):
             'message': 'Metadata not found',
         }
         return response_object, 200
+
+def get_count_user():
+    query =  db.session.query(User.username, func.count(Contributions.user_id)).join(User).order_by(User.username).group_by(User.username).all()
+    print(query)
+    data = []
+    for i in query: 
+        #print(i.as_dict())
+        print(i)
+        data.append({
+                    'username' : i[0],
+                    'count' : i[1]
+                }
+        )
+    print(data)
+    response_object = {
+            'data': data
+    }
+    return response_object, 200

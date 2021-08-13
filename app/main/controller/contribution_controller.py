@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 import os
 from ..util.dto import ContributionDto
-from ..service.contribution_service import get_a_contribution, get_all, get_all_username, save_new_contribution, update_contribution, delete_contribution
+from ..service.contribution_service import get_a_contribution, get_all, get_all_username, save_new_contribution, update_contribution, delete_contribution, get_count_user
 from ..util.decorator import admin_token_required, token_required
 
 api = ContributionDto.api
@@ -84,3 +84,13 @@ class ContributionDelete(Resource):
         """Delete a Contribution """
         data = request.json
         return delete_contribution(data=data)
+
+@api.route('/count/user/')
+class ContributionUser(Resource):
+    @api.response(200, 'Harvest successfully counted.')
+    @api.doc('count total contribution by user')
+    #@api.expect(_delete, validate=True)
+    #@admin_token_required
+    def get(self):
+        """count total contribution by user"""
+        return get_count_user()
