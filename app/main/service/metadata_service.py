@@ -611,7 +611,7 @@ class Repository(object):
         return clazz._engines[url]
 
     ''' Class to interact with underlying repository '''
-    def __init__(self, database, context, app_root=None, table='records', repo_filter=None):
+    def __init__(self, database, context, app_root=None, table='records2', repo_filter=None):
         ''' Initialize repository '''
 
         self.context = context
