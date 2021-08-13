@@ -724,6 +724,7 @@ class Repository(object):
     def _create_values(self, values):
         value_dict = {}
         for num, value in enumerate(values):
+            print(num, ' ', value)
             value_dict['pvalue%d' % num] = value
         return value_dict
 
@@ -898,12 +899,16 @@ class Repository(object):
 
     def delete(self, constraint):
         ''' Delete a record from the repository '''
-
+        print(" xxxxx ", constraint)
+        print(self._create_values(constraint['values']))
+        print(text(constraint['where']).params(self._create_values(constraint['values'])))
+        
         try:
             self.session.begin()
             rows = self._get_repo_filter(self.session.query(self.dataset)).filter(
             text(constraint['where'])).params(self._create_values(constraint['values']))
-
+           
+            print(rows)
             parentids = []
             for row in rows:  # get ids
                 parentids.append(getattr(row,
@@ -3036,48 +3041,13 @@ def get_csw_records(csw, pagesize=10, maxrecords=1000):
             break
     csw.records.update(csw_records)
 
-def save_new_metadata(filename, username):
+def save_new_metadata(filename, username, statusMetadata=False):
     metadata = Metadata.query.filter_by(filename=filename).first()
-    print(filename, ' ' , username)
+    print(filename, ' ' , username, ' ', statusMetadata)
     print(metadata)
     if not metadata:
         if validate_xml(os.path.join(UPLOAD_FOLDER,filename)) == 'Valid':
-            '''
-            CP = configparser.ConfigParser(interpolation=EnvInterpolation())
-            CFG = os.path.join(os.getcwd(), 'pycsw.cfg')
-            with open(CFG) as f:
-                CP.read_file(f)
-            DATABASE = CP.get('repository', 'database')
-            try:
-                TABLE = CP.get('repository', 'table')
-            except configparser.NoOptionError:
-                TABLE = 'records'
-            
-            CONTEXT = StaticContext()
-
-            try:
-                exml = etree.parse(os.path.join(UPLOAD_FOLDER,filename), CONTEXT.parser)
-            except etree.XMLSyntaxError as err:
-                print('XML document "%s" is not well-formed')
-                #continue
-            except Exception as err:
-                print('XML document "%s" is not well-formed')
-
-            REPO = Repository(DATABASE, CONTEXT, TABLE)
-            '''
-
-            try:
-                '''
-                record = parse_record(CONTEXT, exml, REPO)
-                #get user
-                for rec in record:
-                    print(rec.identifier)
-                    print(rec.typename)
-                    print(rec.schema)
-                    print(rec.mdsource)
-                    print(rec.insert_date)
-                    REPO.insert(rec, 'local', get_today_and_now())
-                '''
+            try:            
                 user = User.query.filter_by(username=username).first()
                 if not user:
                     response_object = {
@@ -3089,12 +3059,45 @@ def save_new_metadata(filename, username):
 
                     #base = 'http://localhost:7001/csw'
                     #csw = CatalogueServiceWeb(base, timeout=30)
+                    if statusMetadata :
+                        CP = configparser.ConfigParser(interpolation=EnvInterpolation())
+                        CFG = os.path.join(os.getcwd(), 'pycsw.cfg')
+                        with open(CFG) as f:
+                            CP.read_file(f)
+                        DATABASE = CP.get('repository', 'database')
+                        try:
+                            TABLE = CP.get('repository', 'table')
+                        except configparser.NoOptionError:
+                            TABLE = 'records'
+                        
+                        CONTEXT = StaticContext()
+
+                        try:
+                            exml = etree.parse(os.path.join(UPLOAD_FOLDER,filename), CONTEXT.parser)
+                        except etree.XMLSyntaxError as err:
+                            print('XML document "%s" is not well-formed')
+                            #continue
+                        except Exception as err:
+                            print('XML document "%s" is not well-formed')
+
+                        REPO = Repository(DATABASE, CONTEXT, TABLE)
+
+                        record = parse_record(CONTEXT, exml, REPO)
+                        #get user
+                        for rec in record:
+                            print(rec.identifier)
+                            print(rec.typename)
+                            print(rec.schema)
+                            print(rec.mdsource)
+                            print(rec.insert_date)
+                            REPO.insert(rec, 'local', get_today_and_now())
 
                     new_metadata = Metadata(
                         filename=filename,
                         time_uploaded=datetime.datetime.utcnow(),
                         user_id = user.id,
-                        status = False
+                        validated = True,
+                        status = statusMetadata
                     )
                     save_changes(new_metadata)
                     response_object = {
@@ -3160,9 +3163,87 @@ def update_metadata(data):
         }
         return response_object, 200
 
+def update_metadata_admin(data):
+    metadata = Metadata.query.filter_by(id=data['id']).first()
+    if metadata:
+        CP = configparser.ConfigParser(interpolation=EnvInterpolation())
+        CFG = os.path.join(os.getcwd(), 'pycsw.cfg')
+        with open(CFG) as f:
+            CP.read_file(f)
+        DATABASE = CP.get('repository', 'database')
+        try:
+            TABLE = CP.get('repository', 'table')
+        except configparser.NoOptionError:
+            TABLE = 'records'
+        
+        CONTEXT = StaticContext()
+
+        try:
+            exml = etree.parse(os.path.join(UPLOAD_FOLDER,metadata.filename), CONTEXT.parser)
+        except etree.XMLSyntaxError as err:
+            print('XML document "%s" is not well-formed')
+            #continue
+        except Exception as err:
+            print('Exception error "%s" is not well-formed')
+
+        REPO = Repository(DATABASE, CONTEXT, TABLE)
+
+        record = parse_record(CONTEXT, exml, REPO)
+        if data['statusMetadata'] == 'true' :
+            statusMetadata = True
+            #get user
+            for rec in record:
+                print(rec.identifier)
+                REPO.insert(rec, 'local', get_today_and_now())
+        else:
+            statusMetadata = False
+            for rec in record:
+                print(rec.identifier + ' delete')
+                REPO.delete({'where': 'identifier=:pvalue0', 'values': [rec.identifier]})
+
+        setattr(metadata, 'status', statusMetadata)
+        db.session.commit()
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully updated.'
+        }
+        return response_object, 201
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'Organization not found',
+        }
+        return response_object, 200
+
 def delete_metadata(data):
     metadata = Metadata.query.filter_by(id=data['id']).first()
     if metadata:
+        CP = configparser.ConfigParser(interpolation=EnvInterpolation())
+        CFG = os.path.join(os.getcwd(), 'pycsw.cfg')
+        with open(CFG) as f:
+            CP.read_file(f)
+        DATABASE = CP.get('repository', 'database')
+        try:
+            TABLE = CP.get('repository', 'table')
+        except configparser.NoOptionError:
+            TABLE = 'records'
+        
+        CONTEXT = StaticContext()
+        #print(metadata.filename)
+        try:
+            exml = etree.parse(os.path.join(UPLOAD_FOLDER,metadata.filename), CONTEXT.parser)
+            REPO = Repository(DATABASE, CONTEXT, TABLE)
+            record = parse_record(CONTEXT, exml, REPO)
+            for rec in record:
+                print(rec.identifier + ' dsadsa')
+                REPO.delete({'where': 'identifier=:pvalue0', 'values': [rec.identifier]})
+        except etree.XMLSyntaxError as err:
+            print('XML document "%s" is not well-formed')
+            #continue
+        except Exception as err:
+            print('err "%s" is not well-formed', err)
+
+        
         Metadata.query.filter_by(id=data['id']).delete()
         db.session.commit()
         response_object = {

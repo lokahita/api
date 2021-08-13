@@ -247,6 +247,10 @@ class MetadataDto:
         'filename': fields.String(required=True, description='file name'),
         'status': fields.Boolean()
     })
+    updateAdmin = api.model('metadata_update_admin', {
+        'id': fields.Integer(required=True, description='id'),
+        'statusMetadata': fields.String(required=True)
+    })
     delete = api.model('metadata_delete', {
         'id': fields.Integer(required=True, description='id'),
     })

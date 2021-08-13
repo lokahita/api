@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 import os
 from ..util.dto import MetadataDto
-from ..service.metadata_service import get_a_metadata, get_all, get_all_username, save_new_metadata, update_metadata, delete_metadata
+from ..service.metadata_service import get_a_metadata, get_all, get_all_username, save_new_metadata, update_metadata, update_metadata_admin, delete_metadata
 from ..util.decorator import admin_token_required, token_required
 
 api = MetadataDto.api
@@ -10,6 +10,7 @@ _schema =  MetadataDto.schema
 _schemaUser =  MetadataDto.schemaUser
 _entry =  MetadataDto.entry
 _update =  MetadataDto.update
+_updateAdmin =  MetadataDto.updateAdmin
 _delete =  MetadataDto.delete
 
 #APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -40,6 +41,9 @@ class MetadataDtoList(Resource):
         #print(request.__dict__)
         #print(request.form['username'])
         username = request.form['username']
+        print(username)
+        statusMetadata = request.form['statusMetadata']
+        print(statusMetadata)
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
@@ -49,8 +53,17 @@ class MetadataDtoList(Resource):
             }
             return response_object, 200
         else:
-            file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-            return save_new_metadata(file.filename, username)
+            if statusMetadata == '':
+                file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+                return save_new_metadata(file.filename, username, False)
+            else:
+                #return 'OKE'
+                if statusMetadata == 'true':
+                    statusMetadata = True
+                else:
+                    statusMetadata = False
+                file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+                return save_new_metadata(file.filename, username, statusMetadata)
 
 @api.route('/id/<int:id>')
 @api.param('id', 'The Metadata id')
@@ -91,6 +104,17 @@ class MetadataUpdate(Resource):
         """Update a Metadata"""
         data = request.json
         return update_metadata(data=data)
+
+@api.route('/updateAdmin/')
+class MetadataUpdate(Resource):
+    @api.response(201, 'Metadata successfully updated.')
+    @api.doc('update a metadata')
+    @api.expect(_updateAdmin, validate=True)
+    @token_required
+    def post(self):
+        """Update a Metadata"""
+        data = request.json
+        return update_metadata_admin(data=data)
 
 @api.route('/delete/')
 class MetadataDelete(Resource):
