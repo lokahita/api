@@ -3068,11 +3068,12 @@ def save_new_metadata(filename, username, statusMetadata=False):
                         try:
                             TABLE = CP.get('repository', 'table')
                         except configparser.NoOptionError:
-                            TABLE = 'records'
+                            TABLE = 'records2'
                         
                         CONTEXT = StaticContext()
 
                         try:
+                            print(DATABASE, ' ' , TABLE)
                             exml = etree.parse(os.path.join(UPLOAD_FOLDER,filename), CONTEXT.parser)
                         except etree.XMLSyntaxError as err:
                             print('XML document "%s" is not well-formed')
@@ -3174,11 +3175,12 @@ def update_metadata_admin(data):
         try:
             TABLE = CP.get('repository', 'table')
         except configparser.NoOptionError:
-            TABLE = 'records'
+            TABLE = 'records2'
         
         CONTEXT = StaticContext()
 
         try:
+            print(DATABASE, ' ' , TABLE)
             exml = etree.parse(os.path.join(UPLOAD_FOLDER,metadata.filename), CONTEXT.parser)
         except etree.XMLSyntaxError as err:
             print('XML document "%s" is not well-formed')
@@ -3226,11 +3228,12 @@ def delete_metadata(data):
         try:
             TABLE = CP.get('repository', 'table')
         except configparser.NoOptionError:
-            TABLE = 'records'
+            TABLE = 'records2'
         
         CONTEXT = StaticContext()
         #print(metadata.filename)
         try:
+            print(DATABASE, ' ' , TABLE)
             exml = etree.parse(os.path.join(UPLOAD_FOLDER,metadata.filename), CONTEXT.parser)
             REPO = Repository(DATABASE, CONTEXT, TABLE)
             record = parse_record(CONTEXT, exml, REPO)
