@@ -73,22 +73,37 @@ def harvest_an_organization(id):
                 tipe = ""
                 if csw.records[rec].identification.spatialrepresentationtype:
                     tipe=csw.records[rec].identification.spatialrepresentationtype[0]
-                new_harvest = Harvestings(
-                    organization_id=row.id,
-                    title=csw.records[rec].identification.title,
-                    data_type=tipe,
-                    abstract=csw.records[rec].identification.abstract,
-                    identifier=csw.records[rec].identifier,
-                    publication_date=csw.records[rec].datestamp,#datetime.datetime.strptime(, "%Y-%m-%dT%H:%M:%SZ"),
-                    distributions=json.dumps([i.__dict__ for i in csw.records[rec].distribution.online]),
-                    categories=json.dumps([i for i in csw.records[rec].identification.topiccategory]),
-                    keywords=json.dumps([i for i in csw.records[rec].identification.keywords]),
-                    #bbox='SRID=3857;POLYGON(('+str(x2)+' '+str(y2)+','+str(x4)+' '+str(y2)+','+str(x4)+' '+str(y4)+','+str(x2)+' '+str(y4)+','+str(x2)+' '+str(y2)+'))'
-                    bbox='SRID=4326;POLYGON(('+minx+' '+miny+','+maxx+' '+miny+','+maxx+' '+maxy+','+minx+' '+maxy+','+minx+' '+miny+'))'
-                )
-                strz = strz + '\n' + csw.records[rec].identifier + ',' + csw.records[rec].identification.title
-                save_changes(new_harvest) 
-                total = total+1
+                
+                try:     
+                    #print(i, " ", csw_target.records[rec].identifier, " ", jum )
+                    distributions = csw.records[rec].distribution.online
+                    check = False
+                    for dist in distributions:
+                        #print("         ", dist.name, " ", dist.protocol)
+                        if 'WMS' in dist.url:
+                            check = True
+                    if check:
+                        #print(i, " ", csw_target.records[rec].identifier, " 0" )
+                        new_harvest = Harvestings(
+                            organization_id=row.id,
+                            title=csw.records[rec].identification.title,
+                            data_type=tipe,
+                            abstract=csw.records[rec].identification.abstract,
+                            identifier=csw.records[rec].identifier,
+                            publication_date=csw.records[rec].datestamp,#datetime.datetime.strptime(, "%Y-%m-%dT%H:%M:%SZ"),
+                            distributions=json.dumps([i.__dict__ for i in csw.records[rec].distribution.online]),
+                            categories=json.dumps([i for i in csw.records[rec].identification.topiccategory]),
+                            keywords=json.dumps([i for i in csw.records[rec].identification.keywords]),
+                            #bbox='SRID=3857;POLYGON(('+str(x2)+' '+str(y2)+','+str(x4)+' '+str(y2)+','+str(x4)+' '+str(y4)+','+str(x2)+' '+str(y4)+','+str(x2)+' '+str(y2)+'))'
+                            bbox='SRID=4326;POLYGON(('+minx+' '+miny+','+maxx+' '+miny+','+maxx+' '+maxy+','+minx+' '+maxy+','+minx+' '+miny+'))'
+                        )
+                        strz = strz + '\n' + csw.records[rec].identifier + ',' + csw.records[rec].identification.title
+                        save_changes(new_harvest) 
+                        total = total+1
+                except AttributeError:
+                    print(csw.records[rec].identifier, " 0")
+                    #i=i+1
+                    continue
                     #print(total)
         filename =  time.strftime(row.name +'_%Y%m%d_%H%M%S_'+str(total)+'.txt', time.localtime())
         with open(os.path.join(LOG_FOLDER, filename), 'w') as f:
@@ -129,7 +144,6 @@ def get_csw_records(csw, pagesize=10, maxrecords=1000):
             maxrecords=pagesize,
             sortby=sortby,
             outputschema="http://www.isotc211.org/2005/gmd",
-            esn='full'
         )
         csw_records.update(csw.records)
         if csw.results["nextrecord"] == 0:
