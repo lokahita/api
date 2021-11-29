@@ -2,7 +2,7 @@ from flask import request, jsonify, json
 from flask_restplus import Resource
 
 from ..util.dto import UserDto
-from ..service.user_service import save_new_user, get_all_users, get_a_user, get_a_user_email, get_a_user_username, delete_user
+from ..service.user_service import save_new_user, get_all_users, get_a_user, get_a_user_email, get_a_user_username, delete_user, update_user, password_user
 from ..util.decorator import admin_token_required, token_required
 from ..util.pagination import get_paginated_list
 
@@ -12,6 +12,8 @@ api = UserDto.api
 _user = UserDto.user
 _schema = UserDto.schema
 _delete = UserDto.delete
+_update = UserDto.update
+_password = UserDto.password
 
 @api.route('/')
 #@api.header('Authorization: Bearer', 'JWT TOKEN', required=True)
@@ -111,3 +113,26 @@ class UserDelete(Resource):
         """Delete an User """
         data = request.json
         return delete_user(data=data)
+
+@api.route('/update/')
+class UserUpdate(Resource):
+    @api.response(200, 'User information successfully updated.')
+    @api.doc('update a user')
+    @api.expect(_update, validate=True)
+    @token_required
+    def post(self):
+        """Update a User"""
+        data = request.json
+        return update_user(data=data)
+
+
+@api.route('/password/')
+class UserPasssword(Resource):
+    @api.response(200, 'User password successfully update.')
+    @api.doc('update an user password')
+    @api.expect(_password, validate=True)
+    @token_required
+    def post(self):
+        """Update a user password"""
+        data = request.json
+        return password_user(data=data)

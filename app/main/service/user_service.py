@@ -88,3 +88,54 @@ def delete_user(data):
             'message': 'User not found',
         }
         return response_object, 200
+
+
+def update_user(data):
+    user = User.query.filter_by(public_id=data['public_id']).first()
+    if user:
+        setattr(user, 'fullname', data['fullname'])
+        setattr(user, 'email', data['email'])
+        db.session.commit()
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully updated.'
+        }
+        return response_object, 200
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'User not found',
+        }
+        return response_object, 200
+
+def password_user(data):
+    user = User.query.filter_by(public_id=data['public_id']).first()
+
+    if user:
+        if user.check_password(data['current_password']):
+            if (data['new_password'] == data['repeat_password']):
+                setattr(user, 'password', data['new_password'])
+                db.session.commit()
+                response_object = {
+                    'status': 'success',
+                    'message': 'Successfully updated.'
+                }
+                return response_object, 200
+            else:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'New password and repeat password do not match',
+                }
+                return response_object, 200
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Current password is incorrect',
+            }
+            return response_object, 200
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'User not found',
+        }
+        return response_object, 200

@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, send_file
 from flask_restplus import Resource
 import os
 import subprocess 
@@ -6,6 +6,8 @@ from ..util.dto import DataDto
 #from ..service.metadata_service import get_a_metadata, get_all, save_new_metadata, update_metadata, delete_metadata
 from ..util.decorator import admin_token_required, token_required
 import requests
+from ..model.contributions import Contributions
+from ..model.user import User
 
 api = DataDto.api
 #_schema =  DataDto.schema
@@ -15,7 +17,7 @@ api = DataDto.api
 
 #APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'data', 'uploads')
-GEOSERVER = "https://data.cifor.org/geoportal/geoserver/rest/" #"http://localhost/geoserver/rest/"
+GEOSERVER = "http://localhost/geoserver/rest/" #"https://data.cifor.org/geoportal/geoserver/rest/" #"http://localhost/geoserver/rest/"
 AUTH = "Authorization: Basic YWRtaW46bXlhd2Vzb21lZ2Vvc2VydmVy" #'Authorization: Basic YWRtaW46bXlhd2Vzb21lZ2Vvc2VydmVy' 
 WS = 'fta'
 CONTENT = "Content-type: application/zip"
@@ -192,3 +194,34 @@ def publish_geoserver(path, username):
                         'message': 'Successfully published'
                     }
     return response_object, 201
+
+
+@api.route('/download/<int:id>')
+@api.param('id', 'The message identifier')
+@api.response(404, 'The Message not found.')
+@api.response(401, 'Unauthorized.')
+class Data(Resource):
+    @api.doc('get a message')
+    #@api.marshal_with(_schema)
+    #@token_required
+    def get(self, id):
+        """get a message given its identifier"""
+        username, filename = get_info(id)
+        path = os.path.join(UPLOAD_FOLDER,filename.replace('.shp', '.zip'))
+
+        if not filename:
+            api.abort(404)
+        else:
+            return send_file(path, as_attachment="true")
+
+
+def get_info(id):
+    gallery = Contributions.query.filter_by(id=id).first()
+    if gallery:
+        user = User.query.filter_by(id=gallery.user_id).first()
+        if user:
+            return user.username, gallery.filename
+        else:
+            return None, None
+    else:
+        return None, None

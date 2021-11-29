@@ -98,11 +98,11 @@ def delete_contribution(data):
             'status': 'success',
             'message': 'Successfully deleted.'
         }
-        return response_object, 201
+        return response_object, 200
     else:
         response_object = {
             'status': 'fail',
-            'message': 'Metadata not found',
+            'message': 'Data not found',
         }
         return response_object, 200
 

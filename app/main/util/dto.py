@@ -210,6 +210,17 @@ class UserDto:
     delete = api.model('user_delete', {
         'public_id': fields.String(required=True, description='public_id'),
     })
+    update = api.model('user_update', {
+        'fullname': fields.String(required=True, description='user fullname'),
+        'email': fields.String(required=True, description='user email address'),
+        'public_id': fields.String(required=True, description='public_id'),
+    })
+    password = api.model('user_password', {
+        'current_password': fields.String(required=True, description='user current password'),
+        'new_password': fields.String(required=True, description='user new password'),
+        'repeat_password': fields.String(required=True, description='user repeat password'),
+        'public_id': fields.String(required=True, description='public_id'),
+    })
 
 class ProxyDto:
     api = Namespace('proxy', description='proxy related operations')

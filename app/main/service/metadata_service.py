@@ -3260,3 +3260,15 @@ def delete_metadata(data):
             'message': 'Metadata not found',
         }
         return response_object, 200
+
+
+def get_info(id):
+    gallery = Metadata.query.filter_by(id=id).first()
+    if gallery:
+        user = User.query.filter_by(id=gallery.user_id).first()
+        if user:
+            return user.username, gallery.filename
+        else:
+            return None, None
+    else:
+        return None, None

@@ -1,8 +1,8 @@
-from flask import request
+from flask import request, send_file, Response
 from flask_restplus import Resource
 import os
 from ..util.dto import MetadataDto
-from ..service.metadata_service import get_a_metadata, get_all, get_all_username, save_new_metadata, update_metadata, update_metadata_admin, delete_metadata
+from ..service.metadata_service import get_a_metadata, get_all, get_all_username, save_new_metadata, update_metadata, update_metadata_admin, delete_metadata, get_info
 from ..util.decorator import admin_token_required, token_required
 
 api = MetadataDto.api
@@ -126,3 +126,42 @@ class MetadataDelete(Resource):
         """Delete an Metadata """
         data = request.json
         return delete_metadata(data=data)
+
+
+@api.route('/download/<int:id>')
+@api.param('id', 'The message identifier')
+@api.response(404, 'The Message not found.')
+@api.response(401, 'Unauthorized.')
+class Data(Resource):
+    @api.doc('get a message')
+    #@api.marshal_with(_schema)
+    #@token_required
+    def get(self, id):
+        """get a message given its identifier"""
+        username, filename = get_info(id)
+        path = os.path.join(UPLOAD_FOLDER,filename)
+
+        if not filename:
+            api.abort(404)
+        else:
+            return send_file(path, as_attachment="true")
+
+@api.route('/view/<int:id>')
+@api.param('id', 'The message identifier')
+@api.response(404, 'The Message not found.')
+@api.response(401, 'Unauthorized.')
+class Data(Resource):
+    @api.doc('get a message')
+    #@api.marshal_with(_schema)
+    #@token_required
+    def get(self, id):
+        """get a message given its identifier"""
+        username, filename = get_info(id)
+        path = os.path.join(UPLOAD_FOLDER,filename)
+
+        if not filename:
+            api.abort(404)
+        else:
+            with open(path, "r") as f: 
+                content = f.read() 
+                return  Response(content, mimetype='text/xml')
